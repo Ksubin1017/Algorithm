@@ -7,34 +7,49 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
 
-        int n = Integer.parseInt(br.readLine());
-
-        for(int i = 0 ; i < n ; i++){
-            String s = br.readLine();
+        while (true) {
+            String str = br.readLine();
             Stack<Character> stack = new Stack<>();
+            if(str.equals(".")) break;
+            for (int i = 0; i < str.length(); i++) {
+                char c = str.charAt(i);
 
-            for(int j = 0 ; j < s.length() ; j++){
-                if(s.charAt(j) == '('){
-                    stack.push(s.charAt(j));
-                } else {
-                    if(stack.isEmpty()){
-                        stack.push(s.charAt(j));
+                if(c == '(' || c == '[') {
+                    stack.push(c);
+                }
+
+                if(c == ')') {
+                    if(stack.isEmpty()) {
+                        stack.push(c);
                         break;
-                    } else {
+                    }
+
+                    if(stack.peek() == '(') {
                         stack.pop();
+                    } else {
+                        break;
+                    }
+                } else if(c == ']') {
+                    if(stack.isEmpty()) {
+                        stack.push(c);
+                        break;
+                    }
+
+                    if(stack.peek() == '[') {
+                        stack.pop();
+                    } else {
+                        break;
                     }
                 }
             }
 
-            if(stack.isEmpty()){
-                System.out.println("YES");
+            if(stack.isEmpty()) {
+                System.out.println("yes");
             } else {
-                System.out.println("NO");
+                System.out.println("no");
             }
         }
+
+
     }
 }
-
-
-
-
