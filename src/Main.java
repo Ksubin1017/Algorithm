@@ -8,33 +8,43 @@ public class Main {
 
         int n = Integer.parseInt(br.readLine());
 
-        Queue<Integer> queue = new LinkedList<>(); 
-        Stack<Integer> stack2 = new Stack<>();
+        LinkedList<Integer> queue = new LinkedList<>();
 
-        int cnt = 1;
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        for(int i = 0; i < n; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
 
-        for (int i = 0; i < n; i++) {
-            queue.offer(Integer.parseInt(st.nextToken()));
-        }
+            String command = st.nextToken();
 
-        while (true) {
-            if (queue.isEmpty() && stack2.isEmpty()) {
-                System.out.println("Nice");
-                break;
-            }
-
-            if (!queue.isEmpty() && queue.peek() == cnt) {
-                queue.poll();
-                cnt++;
-            } else if (!stack2.isEmpty() && stack2.peek() == cnt) {
-                stack2.pop();
-                cnt++;
-            } else if (!queue.isEmpty()) {
-                stack2.push(queue.poll());
-            } else {
-                System.out.println("Sad");
-                break;
+            if(command.equals("push")) {
+                int x = Integer.parseInt(st.nextToken());
+                queue.offer(x);
+            } else if(command.equals("pop")) {
+                if(queue.isEmpty()) {
+                    System.out.println("-1");
+                } else {
+                    int x = queue.poll();
+                    System.out.println(x);
+                }
+            } else if(command.equals("size")) {
+                System.out.println(queue.size());
+            } else if(command.equals("empty")) {
+                if(!queue.isEmpty()) {
+                    System.out.println(0);
+                } else {
+                    System.out.println(1);
+                }
+            } else if(command.equals("front")) {
+                if(!queue.isEmpty()) {
+                    System.out.println(queue.peek());
+                } else {
+                    System.out.println(-1);
+                }
+            } else if(command.equals("back")) {
+                if(!queue.isEmpty()) {
+                    System.out.println(queue.peekLast());
+                } else {
+                    System.out.println(-1);
+                }
             }
         }
     }
