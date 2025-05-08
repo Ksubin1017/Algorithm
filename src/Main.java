@@ -6,30 +6,59 @@ public class Main {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
-        sb.append("<");
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int k = Integer.parseInt(st.nextToken());
 
-        Queue<Integer> queue = new LinkedList<>();
+        Deque<Integer> deque = new ArrayDeque<>();
 
-        for(int i = 1; i <= n; i++) {
-            queue.add(i);
-        }
+        int n = Integer.parseInt(br.readLine());
 
-        while(queue.size() > 1) {
-            for(int i = 0; i < k-1; i++) {
-                int temp = queue.poll();
-                queue.add(temp);
+        for (int i = 0; i < n; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+
+            switch (a) {
+                case 1:
+                    deque.addFirst(Integer.parseInt(st.nextToken()));
+                    break;
+
+                case 2:
+                    deque.addLast(Integer.parseInt(st.nextToken()));
+                    break;
+
+                case 3:
+                    if (deque.isEmpty()) {
+                        System.out.println(-1);
+                        break;
+                    } else {
+                        System.out.println(deque.pollFirst());
+                        break;
+                    }
+                case 4:
+                    if (deque.isEmpty()) {
+                        System.out.println(-1);
+                        break;
+                    } else {
+                        System.out.println(deque.pollLast());
+                        break;
+                    }
+                case 5:
+                    System.out.println(deque.size());
+                    break;
+
+                case 6:
+                    int x = deque.isEmpty() ? 1 : 0;
+                    System.out.println(x);
+                    break;
+
+                case 7:
+                    int y = !deque.isEmpty() ? deque.peekFirst() : -1;
+                    System.out.println(y);
+                    break;
+
+                case 8:
+                    int z = !deque.isEmpty() ? deque.peekLast() : -1;
+                    System.out.println(z);
+                    break;
             }
-
-            int num = queue.poll();
-            sb.append(num).append(", ");
         }
-
-        int num = queue.poll();
-        sb.append(num).append(">");
-
-        System.out.println(sb.toString());
     }
 }
