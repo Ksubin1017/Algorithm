@@ -1,4 +1,5 @@
 import java.io.*;
+import java.math.BigInteger;
 import java.util.*;
 
 public class Main {
@@ -6,22 +7,33 @@ public class Main {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
-        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int n = Integer.parseInt(st.nextToken());
-        int k = Integer.parseInt(st.nextToken());
+        int x = Integer.parseInt(br.readLine());
 
-        System.out.println(factorial(n) / (factorial(k) * factorial(n - k)));
+        for (int i = 0; i < x; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+
+
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+
+            int n = Math.max(a, b);
+            int k = Math.min(a, b);
+
+            BigInteger result = factorial(n)
+                    .divide(factorial(k).multiply(factorial(n - k)));
+
+            System.out.println(result);
+        }
     }
 
-    static int factorial(int num)
-    {
-        int result = 1; //0과 1 팩토리얼은 1이기 때문에 1부터 시작
+    static BigInteger factorial(int num) {
+        BigInteger result = BigInteger.ONE;
 
-        for(int i = 2; i <= num; i++)
-        {
-            result = result * i;
+        for (int i = 2; i <= num; i++) {
+            result = result.multiply(BigInteger.valueOf(i));
         }
+
         return result;
     }
 }
