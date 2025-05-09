@@ -6,59 +6,22 @@ public class Main {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        Deque<Integer> deque = new ArrayDeque<>();
+        int n = Integer.parseInt(st.nextToken());
+        int k = Integer.parseInt(st.nextToken());
 
-        int n = Integer.parseInt(br.readLine());
+        System.out.println(factorial(n) / (factorial(k) * factorial(n - k)));
+    }
 
-        for (int i = 0; i < n; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
+    static int factorial(int num)
+    {
+        int result = 1; //0과 1 팩토리얼은 1이기 때문에 1부터 시작
 
-            switch (a) {
-                case 1:
-                    deque.addFirst(Integer.parseInt(st.nextToken()));
-                    break;
-
-                case 2:
-                    deque.addLast(Integer.parseInt(st.nextToken()));
-                    break;
-
-                case 3:
-                    if (deque.isEmpty()) {
-                        System.out.println(-1);
-                        break;
-                    } else {
-                        System.out.println(deque.pollFirst());
-                        break;
-                    }
-                case 4:
-                    if (deque.isEmpty()) {
-                        System.out.println(-1);
-                        break;
-                    } else {
-                        System.out.println(deque.pollLast());
-                        break;
-                    }
-                case 5:
-                    System.out.println(deque.size());
-                    break;
-
-                case 6:
-                    int x = deque.isEmpty() ? 1 : 0;
-                    System.out.println(x);
-                    break;
-
-                case 7:
-                    int y = !deque.isEmpty() ? deque.peekFirst() : -1;
-                    System.out.println(y);
-                    break;
-
-                case 8:
-                    int z = !deque.isEmpty() ? deque.peekLast() : -1;
-                    System.out.println(z);
-                    break;
-            }
+        for(int i = 2; i <= num; i++)
+        {
+            result = result * i;
         }
+        return result;
     }
 }
