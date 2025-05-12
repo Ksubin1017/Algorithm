@@ -9,21 +9,21 @@ public class Main {
         StringBuilder sb = new StringBuilder();
 
         int n = Integer.parseInt(br.readLine());
-        int answer = 0;
-        HashMap<String, Integer> map = new HashMap<>();
 
-        for (int i = 0; i < n; i++) {
-            String s = br.readLine();
+        HashSet<String> set = new HashSet<>();
+        set.add("ChongChong");
 
-            if(s.equals("ENTER")) {
-                map.clear();
-            } else {
-                if(!map.containsKey(s)) {
-                    map.put(s, 1);
-                    answer++;
-                }
+        for(int i = 0; i < n; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            String a = st.nextToken();
+            String b = st.nextToken();
+
+            if(set.contains(a) || set.contains(b)) {
+                set.add(a);
+                set.add(b);
             }
         }
-        System.out.println(answer);
+
+        System.out.println(set.size());
     }
 }
