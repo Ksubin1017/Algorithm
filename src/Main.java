@@ -9,22 +9,21 @@ public class Main {
         StringBuilder sb = new StringBuilder();
 
         int n = Integer.parseInt(br.readLine());
-        int[] arr = new int[n];
-        int idx = 0;
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        int answer = 0;
+        HashMap<String, Integer> map = new HashMap<>();
 
-        while (st.hasMoreTokens()) {
-            arr[idx] = Integer.parseInt(st.nextToken());
-            idx++;
+        for (int i = 0; i < n; i++) {
+            String s = br.readLine();
+
+            if(s.equals("ENTER")) {
+                map.clear();
+            } else {
+                if(!map.containsKey(s)) {
+                    map.put(s, 1);
+                    answer++;
+                }
+            }
         }
-
-        Arrays.sort(arr);
-
-        if(arr.length == 1) {
-            System.out.println(arr[0] * arr[0]);
-        } else {
-            System.out.println(arr[0] * arr[arr.length - 1]);
-        }
+        System.out.println(answer);
     }
-
 }
