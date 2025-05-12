@@ -8,32 +8,23 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
 
-        int x = Integer.parseInt(br.readLine());
+        int n = Integer.parseInt(br.readLine());
+        int[] arr = new int[n];
+        int idx = 0;
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        for (int i = 0; i < x; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
+        while (st.hasMoreTokens()) {
+            arr[idx] = Integer.parseInt(st.nextToken());
+            idx++;
+        }
 
+        Arrays.sort(arr);
 
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-
-            int n = Math.max(a, b);
-            int k = Math.min(a, b);
-
-            BigInteger result = factorial(n)
-                    .divide(factorial(k).multiply(factorial(n - k)));
-
-            System.out.println(result);
+        if(arr.length == 1) {
+            System.out.println(arr[0] * arr[0]);
+        } else {
+            System.out.println(arr[0] * arr[arr.length - 1]);
         }
     }
 
-    static BigInteger factorial(int num) {
-        BigInteger result = BigInteger.ONE;
-
-        for (int i = 2; i <= num; i++) {
-            result = result.multiply(BigInteger.valueOf(i));
-        }
-
-        return result;
-    }
 }
