@@ -10,20 +10,15 @@ public class Main {
 
         int n = Integer.parseInt(br.readLine());
 
-        HashSet<String> set = new HashSet<>();
-        set.add("ChongChong");
+        System.out.println(facto(n));
 
-        for(int i = 0; i < n; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            String a = st.nextToken();
-            String b = st.nextToken();
+    }
 
-            if(set.contains(a) || set.contains(b)) {
-                set.add(a);
-                set.add(b);
-            }
+    static long facto(int x) {
+        if(x <= 0) {
+            return 1;
         }
 
-        System.out.println(set.size());
+        return x * facto(x - 1);
     }
 }
