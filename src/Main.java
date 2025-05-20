@@ -10,15 +10,14 @@ public class Main {
 
         int n = Integer.parseInt(br.readLine());
 
-        System.out.println(facto(n));
+        System.out.println(fibo(n));
 
     }
 
-    static long facto(int x) {
-        if(x <= 0) {
-            return 1;
-        }
+    static long fibo(int x) {
+        if(x == 0) return 0;
+        if(x == 1) return 1;
 
-        return x * facto(x - 1);
+        return fibo(x - 1) + fibo(x - 2);
     }
 }
