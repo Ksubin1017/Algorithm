@@ -2,23 +2,40 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static ArrayList<Integer>[] graph;
+    static int n, m, r;
+    static boolean[][] graph;
     static boolean[] visited;
-    static int[] answer;
-    static int n, m, s;
-    static int order;
+    static ArrayList<Integer> queue;
 
     public static void dfs(int idx) {
         visited[idx] = true;
-        answer[idx] = order++;
+        System.out.print(idx + " ");
 
-        for(int i = 0; i < graph[idx].size(); i++) {
-            int next = graph[idx].get(i);
-            if(!visited[next]) {
-                dfs(next);
+        for(int i = 1; i <= n; i++) {
+            if(!visited[i] && graph[idx][i]) {
+                dfs(i);
             }
         }
+    }
 
+    public static void bfs() {
+        queue = new ArrayList<>();
+        visited = new boolean[n + 1];
+
+        queue.add(r);
+        visited[r] = true;
+
+        while(!queue.isEmpty()) {
+            int idx = queue.remove(0);
+            System.out.print(idx + " ");
+
+            for(int i = 1; i <= n; i++) {
+                if(!visited[i] && graph[idx][i]) {
+                    queue.add(i);
+                    visited[i] = true;
+                }
+            }
+        }
     }
 
     public static void main(String[] args) throws IOException {
@@ -26,37 +43,25 @@ public class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
-        s = Integer.parseInt(st.nextToken());
+        r = Integer.parseInt(st.nextToken());
 
-        graph = new ArrayList[n + 1];
-        for(int i = 1; i <= n; i++) {
-            graph[i] = new ArrayList<>();
-        }
+        graph = new boolean[n + 1][n + 1];
         visited = new boolean[n + 1];
-        answer = new int[n + 1];
 
         for(int i = 1; i <= m; i++) {
-            st = new StringTokenizer(br.readLine());
+            st= new StringTokenizer(br.readLine());
             int x = Integer.parseInt(st.nextToken());
             int y = Integer.parseInt(st.nextToken());
-            graph[x].add(y);
-            graph[y].add(x);
+            graph[x][y] = true;
+            graph[y][x] = true;
         }
 
-        for(int i = 1; i <= n; i++) {
-            Collections.sort(graph[i], Collections.reverseOrder());
-        }
+        dfs(r);
+        System.out.println();
+        bfs();
 
-        order = 1;
-        dfs(s);
-
-        for(int i = 1; i <= n; i++) {
-            bw.write(String.valueOf(answer[i]));
-            bw.newLine();
-        }
         bw.close();
         br.close();
     }
