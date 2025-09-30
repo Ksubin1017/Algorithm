@@ -2,25 +2,22 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int n, m;
-    static int max = 1000 + 10;
-    static boolean[][] map;
+    static boolean[][] graph;
     static boolean[][] visited;
-    static String answer;
-    static int[] dx = {1, -1, 0, 0};
-    static int[] dy = {0, 0, 1, -1};
+    static int answer;
+    static int max = 50 + 10;
+    static int n, m;
+    static int[] dx = {-1, -1, 0, 1, 1, 1, 0, -1};
+    static int[] dy = {0, 1, 1, 1, 0, -1, -1, -1};
 
     public static void dfs(int y, int x) {
         visited[y][x] = true;
-        if(y == m) {
-            answer = "YES";
-            return;
-        }
-        for(int k = 0; k < 4; k++) {
-            int ny = y + dy[k];
-            int nx = x + dx[k];
 
-            if(!visited[ny][nx] && map[ny][nx]) {
+        for(int k = 0; k < dx.length; k++) {
+            int nx = x + dx[k];
+            int ny = y + dy[k];
+
+            if(!visited[ny][nx] && graph[ny][nx]) {
                 dfs(ny, nx);
             }
         }
@@ -30,27 +27,37 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        m = Integer.parseInt(st.nextToken());
-        n = Integer.parseInt(st.nextToken());
+        while(true) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int w = Integer.parseInt(st.nextToken());
+            int h = Integer.parseInt(st.nextToken());
 
-        map = new boolean[max][max];
-        visited = new boolean[max][max];
-        answer = "NO";
+            if(w == 0 && h == 0) break;
 
-        for(int i = 1; i <= m; i++) {
-            String str = br.readLine();
-            for(int j = 1; j <= n; j++) {
-                if(str.charAt(j - 1) == '0') {
-                    map[i][j] = true;
+            graph = new boolean[max][max];
+            visited = new boolean[max][max];
+            answer = 0;
+
+            for(int i = 0; i < h; i++) {
+                st = new StringTokenizer(br.readLine());
+                for(int j = 0; j < w; j++) {
+                    int x = Integer.parseInt(st.nextToken());
+                    if(x == 1) graph[i + 1][j + 1] = true;
                 }
             }
+
+            for(int i = 1; i <= h; i++) {
+                for(int j = 1; j <= w; j++) {
+                    if(graph[i][j] && !visited[i][j]) {
+                        dfs(i, j);
+                        answer++;
+                    }
+                }
+            }
+
+            bw.write(answer + "\n");
         }
 
-        for (int j = 1; j <= n; j++)
-            if (map[1][j]) dfs(1, j);
-
-        bw.write(answer);
         bw.close();
         br.close();
     }
