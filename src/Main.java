@@ -2,47 +2,37 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static char[][] graph;
+    static int[][] graph;
     static boolean[][] visited;
-    static int answer;
-    static int[] dx = {1, -1};
-    static int[] dy = {1, -1};
+    static int n;
+    static String answer = "Hing";
 
     public static void dfs(int y, int x) {
+        if(y > 3 || x > 3) return;
+        if(y == n && x == n) answer = "HaruHaru";
         visited[y][x] = true;
+        int cnt = graph[y][x];
 
-        if(graph[y][x] == '-' && graph[y][x + 1] == '-') dfs(y, x + 1);
-        else if(graph[y][x] == '|' && graph[y + 1][x] == '|') dfs(y + 1 , x);
+        if(!visited[y + cnt][x]) dfs(y + cnt, x);
+        if(!visited[y][x + cnt]) dfs(y, x + cnt);
 
     }
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int m = Integer.parseInt(st.nextToken());
-
-        graph = new char[n + 10][m + 10];
-        visited = new boolean[n + 10][m + 10];
-        answer = 0;
-
+        int max = 100 + 10;
+        n = Integer.parseInt(br.readLine());
+        graph = new int[max][max];
+        visited = new boolean[max][max];
         for(int i = 1; i <= n; i++) {
-            String s = br.readLine();
-            for(int j = 1; j <= m; j++) {
-                graph[i][j] = s.charAt(j - 1);
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            for(int j = 1; j <= n; j++) {
+                graph[i][j] = Integer.parseInt(st.nextToken());
             }
         }
 
-        for(int i = 1; i <= n; i++) {
-            for(int j = 1; j <= m; j++) {
-                if(!visited[i][j]) {
-                    dfs(i, j);
-                    answer++;
-                }
-            }
-        }
+        dfs(1, 1);
 
         bw.write(String.valueOf(answer));
         bw.close();
