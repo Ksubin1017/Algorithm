@@ -2,39 +2,36 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int[][] graph;
-    static boolean[][] visited;
-    static int n;
-    static String answer = "Hing";
 
-    public static void dfs(int y, int x) {
-        if(y > 3 || x > 3) return;
-        if(y == n && x == n) answer = "HaruHaru";
-        visited[y][x] = true;
-        int cnt = graph[y][x];
+    public int blackjack(int[] arr, int n, int m) {
+        int max = 0;
+        for(int i = 0; i < n - 2; i++) {
+           for(int j = i + 1; j < n - 1; j++) {
+               for(int k = j + 1; k < n; k++) {
+                   int sum = arr[i] + arr[j] + arr[k];
+                   if(sum == m) return m;
+                   if(sum < m && sum > max) max = sum;
+               }
+           }
+        }
 
-        if(!visited[y + cnt][x]) dfs(y + cnt, x);
-        if(!visited[y][x + cnt]) dfs(y, x + cnt);
-
+        return max;
     }
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        int max = 100 + 10;
-        n = Integer.parseInt(br.readLine());
-        graph = new int[max][max];
-        visited = new boolean[max][max];
-        for(int i = 1; i <= n; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            for(int j = 1; j <= n; j++) {
-                graph[i][j] = Integer.parseInt(st.nextToken());
-            }
+        Main T = new Main();
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+        int[] arr = new int[n];
+
+        st = new StringTokenizer(br.readLine());
+        for(int i = 0; i < n; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        dfs(1, 1);
-
-        bw.write(String.valueOf(answer));
+        bw.write(String.valueOf(T.blackjack(arr, n , m)));
         bw.close();
         br.close();
     }
