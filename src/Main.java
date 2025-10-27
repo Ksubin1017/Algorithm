@@ -3,35 +3,35 @@ import java.util.*;
 
 public class Main {
 
-    public int blackjack(int[] arr, int n, int m) {
-        int max = 0;
-        for(int i = 0; i < n - 2; i++) {
-           for(int j = i + 1; j < n - 1; j++) {
-               for(int k = j + 1; k < n; k++) {
-                   int sum = arr[i] + arr[j] + arr[k];
-                   if(sum == m) return m;
-                   if(sum < m && sum > max) max = sum;
-               }
-           }
+    public int solution(String str) {
+        int n = Integer.parseInt(str);
+        int len = str.length();
+
+        int start = Math.max(1, n - 9 * len);
+
+        for (int i = start; i < n; i++) {
+            int sum = i;
+            int tmp = i;
+
+            while (tmp > 0) {
+                sum += tmp % 10;
+                tmp /= 10;
+            }
+
+            if (sum == n) return i;
         }
 
-        return max;
+        return 0;
     }
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         Main T = new Main();
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int m = Integer.parseInt(st.nextToken());
-        int[] arr = new int[n];
 
-        st = new StringTokenizer(br.readLine());
-        for(int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
-        }
+        String str = br.readLine();
 
-        bw.write(String.valueOf(T.blackjack(arr, n , m)));
+        bw.write(String.valueOf(T.solution(str)));
         bw.close();
         br.close();
     }
