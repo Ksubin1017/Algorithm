@@ -3,25 +3,19 @@ import java.util.*;
 
 public class Main {
 
-    public int solution(String str) {
-        int n = Integer.parseInt(str);
-        int len = str.length();
+    public int[] solution(int[] arr) {
+        int[] result = new int[2];
 
-        int start = Math.max(1, n - 9 * len);
-
-        for (int i = start; i < n; i++) {
-            int sum = i;
-            int tmp = i;
-
-            while (tmp > 0) {
-                sum += tmp % 10;
-                tmp /= 10;
+        for(int x = -999; x < 1000; x++) {
+            for(int y = -999; y < 1000; y++) {
+               if(arr[0] * x + arr[1] * y == arr[2] && arr[3] * x + arr[4] * y == arr[5]) {
+                   result[0] = x;
+                   result[1] = y;
+               }
             }
-
-            if (sum == n) return i;
         }
 
-        return 0;
+        return result;
     }
 
     public static void main(String[] args) throws IOException {
@@ -29,9 +23,18 @@ public class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         Main T = new Main();
 
-        String str = br.readLine();
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        bw.write(String.valueOf(T.solution(str)));
+        int[] arr = new int[6];
+
+        for(int i = 0; i < 6; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
+
+        for(int i = 0; i < 2; i++) {
+            bw.write(T.solution(arr)[i] + " ");
+        }
+
         bw.close();
         br.close();
     }
