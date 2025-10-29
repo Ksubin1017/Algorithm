@@ -4,20 +4,22 @@ import java.util.*;
 public class Main {
 
     public int solution(int n) {
-        int answer = 1;
-        int idx = 666;
+        int cnt = 0;
 
-        while(true) {
-            String str = String.valueOf(idx);
-            if(str.contains("666")) {
-                if(answer == n) {
-                    return idx;
-                } else {
-                    answer++;
-                }
+        while(n > 0) {
+            if(n % 5 == 0) {
+                cnt += n / 5;
+                return cnt;
             }
-            idx++;
+
+            if(n < 3) {
+                return -1;
+            }
+
+            n -= 3;
+            cnt++;
         }
+        return cnt;
     }
 
     public static void main(String[] args) throws IOException {
