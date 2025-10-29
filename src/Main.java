@@ -2,34 +2,58 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
+    static boolean[][] graph;
+    static boolean[][] visited;
+    static int n, cnt, answer;
+    static int max = 25 + 10;
+    static int[] dx = {-1, 0, 1, 0};
+    static int[] dy = {0, 1, 0, -1};
 
-    public int solution(int n) {
-        int cnt = 0;
+    static void dfs(int y, int x) {
+        visited[y][x] = true;
+        cnt++;
 
-        while(n > 0) {
-            if(n % 5 == 0) {
-                cnt += n / 5;
-                return cnt;
-            }
-
-            if(n < 3) {
-                return -1;
-            }
-
-            n -= 3;
-            cnt++;
+        for(int k = 0; k < 4; k++) {
+            int nx = x + dx[k];
+            int ny = y + dy[k];
+            if(!visited[ny][nx] && graph[ny][nx]) dfs(ny, nx);
         }
-        return cnt;
     }
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        Main T = new Main();
 
-        int n = Integer.parseInt(br.readLine());
+        n = Integer.parseInt(br.readLine());
+        answer = 0;
+        graph = new boolean[max][max];
+        visited = new boolean[max][max];
+        ArrayList<Integer> list = new ArrayList<>();
 
-        bw.write(String.valueOf(T.solution(n)));
+        for(int i = 1; i <= n; i++) {
+            String line = br.readLine();
+            for(int j = 1; j <= n; j++) {
+                if(line.charAt(j - 1) == '1') graph[i][j] = true;
+            }
+        }
+
+        for(int i = 1; i <= n; i++) {
+            for(int j = 1; j <= n; j++) {
+                if(!visited[i][j] && graph[i][j]) {
+                    cnt = 0;
+                    dfs(i, j);
+                    answer++;
+                    list.add(cnt);
+                }
+            }
+        }
+
+        Collections.sort(list);
+        bw.write(answer + "\n");
+
+        for(int i : list) {
+            bw.write(i + "\n");
+        }
         bw.close();
         br.close();
     }
