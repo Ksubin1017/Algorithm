@@ -2,27 +2,30 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static boolean[][] graph;
-    static boolean[][] visited;
-    static int answer, cnt, m, n, k;
-    static int max = 100 + 10;
+    static int[][] graph;
+    static int[][] dp;
+    static int m, n;
     static int[] dx = {-1, 0, 1, 0};
     static int[] dy = {0, 1, 0, -1};
 
-    static void dfs(int y, int x) {
-        visited[y][x] = true;
-        cnt++;
+    static int dfs(int y, int x) {
+        if (y == m && x == n) return 1;
+
+        if (dp[y][x] != -1) return dp[y][x];
+
+        dp[y][x] = 0;
 
         for (int k = 0; k < 4; k++) {
-            int ny = y + dy[k];
             int nx = x + dx[k];
-
-            if (ny >= 0 && ny < m && nx >= 0 && nx < n) {
-                if (!visited[ny][nx] && !graph[ny][nx]) {
-                    dfs(ny, nx);
+            int ny = y + dy[k];
+            if (nx >= 1 && nx <= n && ny >= 1 && ny <= m) {
+                if (graph[ny][nx] < graph[y][x]) {
+                    dp[y][x] += dfs(ny, nx);
                 }
             }
         }
+
+        return dp[y][x];
     }
 
     public static void main(String[] args) throws IOException {
@@ -32,43 +35,20 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         m = Integer.parseInt(st.nextToken());
         n = Integer.parseInt(st.nextToken());
-        k = Integer.parseInt(st.nextToken());
 
-        graph = new boolean[max][max];
-        visited = new boolean[max][max];
+        graph = new int[m + 1][n + 1];
+        dp = new int[m + 1][n + 1];
 
-        for (int i = 1; i <= k; i++) {
+        for (int i = 1; i <= m; i++) {
             st = new StringTokenizer(br.readLine());
-            int x1 = Integer.parseInt(st.nextToken());
-            int y1 = Integer.parseInt(st.nextToken());
-            int x2 = Integer.parseInt(st.nextToken());
-            int y2 = Integer.parseInt(st.nextToken());
-
-            for (int y = y1; y < y2; y++) {
-                for (int x = x1; x < x2; x++) {
-                    graph[y][x] = true;
-                }
+            for (int j = 1; j <= n; j++) {
+                graph[i][j] = Integer.parseInt(st.nextToken());
+                dp[i][j] = -1; // 아직 방문 안 한 상태
             }
         }
 
-        ArrayList<Integer> list = new ArrayList<>();
-
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (!visited[i][j] && !graph[i][j]) {
-                    cnt = 0;
-                    dfs(i, j);
-                    answer++;
-                    list.add(cnt);
-                }
-            }
-        }
-        Collections.sort(list);
-        bw.write(answer + "\n");
-        for (int i : list) {
-            bw.write(i + " ");
-        }
-
+        bw.write(dfs(1, 1) + "\n");
+        bw.flush();
         bw.close();
         br.close();
     }
