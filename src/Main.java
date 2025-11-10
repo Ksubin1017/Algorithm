@@ -2,15 +2,11 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    public int[] solution(HashMap<Integer,Integer> map, int[] target) {
-
-        int[] answer = new int[target.length];
-
-        for(int i = 0; i < target.length; i++) {
-            if(map.containsKey(target[i])) {
-                answer[i] = 1;
-            } else {
-                answer[i] = 0;
+    public int solution(HashMap<String,Integer> map, String[] arr) {
+        int answer = 0;
+        for(String s : arr) {
+            if(map.containsKey(s)) {
+                answer++;
             }
         }
 
@@ -22,27 +18,24 @@ public class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         Main main = new Main();
 
-        int n = Integer.parseInt(br.readLine());
-        HashMap<Integer, Integer> map = new HashMap<>();
-
         StringTokenizer st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < n; i++) {
-            int a = Integer.parseInt(st.nextToken());
-            map.put(a, map.getOrDefault(a, 0) + 1);
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+
+        HashMap<String, Integer> map = new HashMap<>();
+
+        for(int i = 0; i < n; i++) {
+            String string = br.readLine();
+            map.put(string, map.getOrDefault(string, 0) + 1);
         }
 
-        int m = Integer.parseInt(br.readLine());
-        int[] target = new int[m];
+        String[] arr = new String[m];
 
-        st = new StringTokenizer(br.readLine());
-
-        for (int i = 0; i < m; i++) {
-            target[i] = Integer.parseInt(st.nextToken());
+        for(int i = 0; i < m; i++) {
+            arr[i] = br.readLine();
         }
 
-        for(int i : main.solution(map, target)) {
-            bw.write(i + " ");
-        }
+        bw.write(main.solution(map, arr) + "");
         bw.flush();
         bw.close();
         br.close();
