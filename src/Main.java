@@ -6,29 +6,46 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        int n = Integer.parseInt(br.readLine());
 
-        for(int i = 0; i < n; i++) {
+
+        while(true){
             String s = br.readLine();
+            if(s.equals(".")) break;
             Stack<Character> stack = new Stack<>();
 
             for(int j = 0; j < s.length(); j++) {
-                if(s.charAt(j) == '(') {
-                    stack.push(s.charAt(j));
-                } else {
+                char c = s.charAt(j);
+                if(c == '(' || c == '[') {
+                    stack.push(c);
+                } else if (c == ')') {
                     if(stack.isEmpty()) {
-                        stack.push(s.charAt(j));
+                        stack.push(c);
                         break;
-                    } else {
+                    }
+
+                    if(stack.peek() == '(') {
                         stack.pop();
+                    } else {
+                        break;
+                    }
+                } else if (c == ']') {
+                    if(stack.isEmpty()) {
+                        stack.push(c);
+                        break;
+                    }
+
+                    if(stack.peek() == '[') {
+                        stack.pop();
+                    } else {
+                        break;
                     }
                 }
             }
 
             if(stack.isEmpty()) {
-                bw.write("YES\n");
+                bw.write("yes\n");
             } else {
-                bw.write("NO\n");
+                bw.write("no\n");
             }
         }
 
