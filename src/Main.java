@@ -2,29 +2,36 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
         int n = Integer.parseInt(br.readLine());
 
-        Stack<Integer> stack = new Stack<>();
-
         for(int i = 0; i < n; i++) {
-            int a = Integer.parseInt(br.readLine());
+            String s = br.readLine();
+            Stack<Character> stack = new Stack<>();
 
-            if(a == 0) {
-                stack.pop();
+            for(int j = 0; j < s.length(); j++) {
+                if(s.charAt(j) == '(') {
+                    stack.push(s.charAt(j));
+                } else {
+                    if(stack.isEmpty()) {
+                        stack.push(s.charAt(j));
+                        break;
+                    } else {
+                        stack.pop();
+                    }
+                }
+            }
+
+            if(stack.isEmpty()) {
+                bw.write("YES\n");
             } else {
-                stack.push(a);
+                bw.write("NO\n");
             }
         }
 
-        int answer = 0;
-        for(int i : stack) {
-            answer += i;
-        }
-        bw.write(answer + "\n");
         bw.flush();
         bw.close();
         br.close();
