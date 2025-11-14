@@ -6,17 +6,25 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        String s = br.readLine();
+        int n = Integer.parseInt(br.readLine());
 
-        HashSet<String> set = new HashSet<>();
+        Stack<Integer> stack = new Stack<>();
 
-        for(int i = 0; i < s.length(); i++) {
-            for(int j = i + 1; j <= s.length(); j++) {
-                set.add(s.substring(i, j));
+        for(int i = 0; i < n; i++) {
+            int a = Integer.parseInt(br.readLine());
+
+            if(a == 0) {
+                stack.pop();
+            } else {
+                stack.push(a);
             }
         }
 
-        bw.write(set.size() + "\n");
+        int answer = 0;
+        for(int i : stack) {
+            answer += i;
+        }
+        bw.write(answer + "\n");
         bw.flush();
         bw.close();
         br.close();
