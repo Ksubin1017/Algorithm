@@ -7,45 +7,34 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
+        int n = Integer.parseInt(br.readLine());
+        Queue<Integer> q = new LinkedList<>();
+        Stack<Integer> s = new Stack<>();
+        int cnt = 1;
 
-        while(true){
-            String s = br.readLine();
-            if(s.equals(".")) break;
-            Stack<Character> stack = new Stack<>();
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-            for(int j = 0; j < s.length(); j++) {
-                char c = s.charAt(j);
-                if(c == '(' || c == '[') {
-                    stack.push(c);
-                } else if (c == ')') {
-                    if(stack.isEmpty()) {
-                        stack.push(c);
-                        break;
-                    }
+        for(int i = 0; i < n; i++) {
+            q.offer(Integer.parseInt(st.nextToken()));
+        }
 
-                    if(stack.peek() == '(') {
-                        stack.pop();
-                    } else {
-                        break;
-                    }
-                } else if (c == ']') {
-                    if(stack.isEmpty()) {
-                        stack.push(c);
-                        break;
-                    }
-
-                    if(stack.peek() == '[') {
-                        stack.pop();
-                    } else {
-                        break;
-                    }
-                }
+        while(true) {
+            if(q.isEmpty() && s.isEmpty()) {
+                bw.write("Nice\n");
+                break;
             }
 
-            if(stack.isEmpty()) {
-                bw.write("yes\n");
+            if(!q.isEmpty() && q.peek() == cnt) {
+                q.poll();
+                cnt++;
+            } else if(!s.isEmpty() && s.peek() == cnt) {
+                s.pop();
+                cnt++;
+            } else if(!q.isEmpty()) {
+                s.push(q.poll());
             } else {
-                bw.write("no\n");
+                bw.write("Sad\n");
+                break;
             }
         }
 
