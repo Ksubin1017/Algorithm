@@ -9,35 +9,24 @@ public class Main {
 
         int n = Integer.parseInt(br.readLine());
         Queue<Integer> q = new LinkedList<>();
-        Stack<Integer> s = new Stack<>();
-        int cnt = 1;
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
-
-        for(int i = 0; i < n; i++) {
-            q.offer(Integer.parseInt(st.nextToken()));
+        for(int i = 1; i <= n; i++) {
+            q.offer(i);
         }
 
-        while(true) {
-            if(q.isEmpty() && s.isEmpty()) {
-                bw.write("Nice\n");
-                break;
-            }
+        int idx = 1;
 
-            if(!q.isEmpty() && q.peek() == cnt) {
+        while(q.size() > 1) {
+            if(idx % 2 != 0) {
                 q.poll();
-                cnt++;
-            } else if(!s.isEmpty() && s.peek() == cnt) {
-                s.pop();
-                cnt++;
-            } else if(!q.isEmpty()) {
-                s.push(q.poll());
             } else {
-                bw.write("Sad\n");
-                break;
+                q.offer(q.poll());
             }
+
+            idx++;
         }
 
+        bw.write(q.poll().toString());
         bw.flush();
         bw.close();
         br.close();
