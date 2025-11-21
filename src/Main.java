@@ -2,33 +2,37 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int cnt;
-    public static int dfs(String s, int lt, int rt) {
-        cnt++;
-        if(lt >= rt) return 1;
-        else if(s.charAt(lt) != s.charAt(rt)) return 0;
-        else return dfs(s, lt + 1, rt - 1);
-    }
+    public String solution(String s, String skip, int index) {
+        StringBuilder answer = new StringBuilder();
+        boolean[] skipArr = new boolean[26];
 
-    public static int isPalindrome(String s) {
-        return dfs(s, 0, s.length() - 1);
+        for(char c : skip.toCharArray()) {
+            skipArr[c - 'a'] = true;
+        }
+
+        for(char c : s.toCharArray()) {
+            int cnt = 0;
+            char cur = c;
+
+            while(cnt < index) {
+                cur++;
+
+                if(cur > 'z') cur = 'a';
+                if(!skipArr[cur - 'a']) cnt++;
+            }
+            answer.append(cur);
+        }
+
+        return answer.toString();
     }
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        StringBuilder sb = new StringBuilder();
+        Main main = new Main();
 
-        int t = Integer.parseInt(br.readLine());
+        bw.write(main.solution("aukks", "wbqd", 5));
 
-        while (t-- > 0) {
-            String s = br.readLine();
-            cnt = 0;
-            int result = isPalindrome(s);
-            sb.append(result).append(" ").append(cnt).append("\n");
-        }
-
-        bw.write(sb.toString());
         bw.flush();
         bw.close();
         br.close();
