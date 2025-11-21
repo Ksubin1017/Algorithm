@@ -2,28 +2,17 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    public String solution(String s, String skip, int index) {
-        StringBuilder answer = new StringBuilder();
-        boolean[] skipArr = new boolean[26];
+    public int solution(String[][] board, int h, int w) {
+        int answer = 0;
+        int[] dx = {-1, 1, 0, 0};
+        int[] dy = {0, 0, -1, 1};
 
-        for(char c : skip.toCharArray()) {
-            skipArr[c - 'a'] = true;
-        }
-
-        for(char c : s.toCharArray()) {
-            int cnt = 0;
-            char cur = c;
-
-            while(cnt < index) {
-                cur++;
-
-                if(cur > 'z') cur = 'a';
-                if(!skipArr[cur - 'a']) cnt++;
+        for(int i = 0; i < dx.length; i++) {
+            if(h + dy[i] >= 0 && w + dx[i] >= 0 && h + dy[i] < board.length && w + dx[i] < board.length) {
+                if (board[h][w].equals(board[h + dy[i]][w + dx[i]])) answer++;
             }
-            answer.append(cur);
         }
-
-        return answer.toString();
+        return answer;
     }
 
     public static void main(String[] args) throws IOException {
@@ -31,7 +20,6 @@ public class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         Main main = new Main();
 
-        bw.write(main.solution("aukks", "wbqd", 5));
 
         bw.flush();
         bw.close();
