@@ -2,16 +2,30 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    public int solution(String[][] board, int h, int w) {
+    public int solution(String s) {
         int answer = 0;
-        int[] dx = {-1, 1, 0, 0};
-        int[] dy = {0, 0, -1, 1};
+        char x = s.charAt(0);
+        int same = 0, diff = 0;
 
-        for(int i = 0; i < dx.length; i++) {
-            if(h + dy[i] >= 0 && w + dx[i] >= 0 && h + dy[i] < board.length && w + dx[i] < board.length) {
-                if (board[h][w].equals(board[h + dy[i]][w + dx[i]])) answer++;
+        for (int i = 0; i < s.length(); i++) {
+            char now = s.charAt(i);
+
+            if (same == 0 && diff == 0) {
+                x = now;
+            }
+
+            if (now == x) same++;
+            else diff++;
+
+            if (same == diff) {
+                answer++;
+                same = 0;
+                diff = 0;
             }
         }
+
+        if (same != 0 || diff != 0) answer++;
+
         return answer;
     }
 
@@ -20,6 +34,7 @@ public class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         Main main = new Main();
 
+        bw.write(main.solution(br.readLine()) + "");
 
         bw.flush();
         bw.close();
