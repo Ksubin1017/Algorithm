@@ -2,40 +2,38 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    public int solution(String s) {
-        int answer = 0;
-        char x = s.charAt(0);
-        int same = 0, diff = 0;
-
-        for (int i = 0; i < s.length(); i++) {
-            char now = s.charAt(i);
-
-            if (same == 0 && diff == 0) {
-                x = now;
-            }
-
-            if (now == x) same++;
-            else diff++;
-
-            if (same == diff) {
-                answer++;
-                same = 0;
-                diff = 0;
-            }
-        }
-
-        if (same != 0 || diff != 0) answer++;
-
-        return answer;
-    }
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         Main main = new Main();
 
-        bw.write(main.solution(br.readLine()) + "");
+        int n = Integer.parseInt(br.readLine());
+        int[] arr = new int[n];
 
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        for(int i = 0; i < n; i++) {
+            arr[i] += Integer.parseInt(st.nextToken());
+        }
+
+        st = new StringTokenizer(br.readLine());
+
+        int b = Integer.parseInt(st.nextToken());
+        int c = Integer.parseInt(st.nextToken());
+
+        long answer = 0;
+
+        for(int i = 0; i < n; i++) {
+            int students = arr[i];
+            students -= b;
+            answer++;
+
+            if(students > 0) {
+                answer += (students + c - 1) / c;
+            }
+        }
+
+        bw.write(answer + "\n");
         bw.flush();
         bw.close();
         br.close();
