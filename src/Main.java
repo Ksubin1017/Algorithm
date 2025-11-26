@@ -2,48 +2,55 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
+    public static boolean isVowel(char c) {
+        return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
+    }
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringBuilder sb = new StringBuilder();
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int m = Integer.parseInt(st.nextToken());
-        int rank = 1;
+        while(true) {
+            String s = br.readLine();
+            if(s.equals("end")) break;
 
-        int[][] arr = new int[n][4];
+            boolean hasVowel = false;
+            boolean rule2 = true;
+            boolean rule3 = true;
 
-        for(int i = 0; i < n; i++) {
-            st = new StringTokenizer(br.readLine());
-            for(int j = 0; j < 4; j++) {
-                arr[i][j] = Integer.parseInt(st.nextToken());
-            }
-        }
+            int vowelCnt = 0;
+            int consonantCnt = 0;
 
-        int[] target = new int[4];
+            for(int i = 0; i < s.length(); i++) {
+                char c = s.charAt(i);
 
-        for(int i = 0; i < n; i++) {
-            if(arr[i][0] == m) {
-                target = arr[i];
-            }
-        }
+                boolean isVowel = isVowel(c);
 
-        for(int i = 0; i < n; i++) {
-            if(target[1] < arr[i][1]) {
-                rank++;
-            } else if(target[1] == arr[i][1]) {
-                if(target[2] < arr[i][2]) {
-                    rank++;
-                } else if(target[2] == arr[i][2]) {
-                    if(target[3] < arr[i][3]) {
-                        rank++;
+                if(isVowel) {
+                    hasVowel = true;
+                    vowelCnt++;
+                    consonantCnt = 0;
+                } else {
+                    consonantCnt++;
+                    vowelCnt = 0;
+                }
+
+                if(vowelCnt == 3 || consonantCnt == 3) rule2 = false;
+
+                if(i > 0) {
+                    char prev = s.charAt(i - 1);
+                    if(prev == c) {
+                        if(!(c == 'e' || c == 'o')) rule3 = false;
                     }
                 }
             }
+
+            if(hasVowel && rule2 && rule3) sb.append("<").append(s).append("> is acceptable.\n");
+            else sb.append("<").append(s).append("> is not acceptable.\n");
         }
 
-
-        bw.write(rank + "\n");
+        bw.write(sb.toString());
 
         bw.flush();
         bw.close();
