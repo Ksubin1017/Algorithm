@@ -6,31 +6,45 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        int t = Integer.parseInt(br.readLine());
-        int[][] arr = new int[t][2];
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+        int rank = 1;
 
-        while(t-- > 0) {
-            int[] line = new int[20];
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            int n = Integer.parseInt(st.nextToken());
-            for(int i = 0; i < 20; i++) line[i] = Integer.parseInt(st.nextToken());
-            int cnt = 0;
+        int[][] arr = new int[n][4];
 
-            for(int i = 19; i > 0; i--) {
-                for(int j = i - 1; j >= 0; j--) {
-                    if(line[i] < line[j]) {
-                        cnt++;
+        for(int i = 0; i < n; i++) {
+            st = new StringTokenizer(br.readLine());
+            for(int j = 0; j < 4; j++) {
+                arr[i][j] = Integer.parseInt(st.nextToken());
+            }
+        }
+
+        int[] target = new int[4];
+
+        for(int i = 0; i < n; i++) {
+            if(arr[i][0] == m) {
+                target = arr[i];
+            }
+        }
+
+        for(int i = 0; i < n; i++) {
+            if(target[1] < arr[i][1]) {
+                rank++;
+            } else if(target[1] == arr[i][1]) {
+                if(target[2] < arr[i][2]) {
+                    rank++;
+                } else if(target[2] == arr[i][2]) {
+                    if(target[3] < arr[i][3]) {
+                        rank++;
                     }
                 }
             }
-
-            arr[n - 1][0] = n;
-            arr[n - 1][1] = cnt;
         }
 
-        for(int[] i : arr) {
-            bw.write(i[0] + " " + i[1] + "\n");
-        }
+
+        bw.write(rank + "\n");
+
         bw.flush();
         bw.close();
         br.close();
