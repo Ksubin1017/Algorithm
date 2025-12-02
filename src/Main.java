@@ -6,50 +6,54 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        int n = Integer.parseInt(br.readLine());
-        int[] light = new int[n + 1];
+        int t = Integer.parseInt(br.readLine());
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        while (t-- > 0) {
+            int n = Integer.parseInt(br.readLine());
+            StringTokenizer st = new StringTokenizer(br.readLine());
 
-        for (int i = 1; i <= n; i++) {
-            light[i] = Integer.parseInt(st.nextToken());
-        }
+            List<Integer> score = new ArrayList<>();
+            for (int i = 1; i <= n; i++) score.add(Integer.parseInt(st.nextToken()));
 
-        int sCnt = Integer.parseInt(br.readLine());
+            HashMap<Integer, Integer> teamCnt = new HashMap<>();
+            for (int x : score) teamCnt.put(x, teamCnt.getOrDefault(x, 0) + 1);
 
-        int[][] sArr = new int[sCnt][2];
+            List<Integer> filterScore = new ArrayList<>();
+            for (int x : score) if (teamCnt.get(x) == 6) filterScore.add(x);
 
-        for(int i = 0; i < sCnt; i++) {
-            st = new StringTokenizer(br.readLine());
-            sArr[i][0] = Integer.parseInt(st.nextToken());
-            sArr[i][1] = Integer.parseInt(st.nextToken());
-        }
+            HashMap<Integer, Integer> top4Sum = new HashMap<>();
+            HashMap<Integer, Integer> cnt4 = new HashMap<>();
+            HashMap<Integer, Integer> fifth = new HashMap<>();
 
-        for(int i = 0; i < sCnt; i++) {
-            if(sArr[i][0] == 1) {
-                int num = sArr[i][1];
-                for(int j = num; j <= n; j += num) {
-                    light[j] = 1 - light[j];
+            int rank = 1;
+            for (int team : filterScore) {
+                int c = cnt4.getOrDefault(team, 0);
+
+                if (c < 4) {
+                    top4Sum.put(team, top4Sum.getOrDefault(team, 0) + rank);
+                    cnt4.put(team, c + 1);
+                } else if (c == 4) {
+                    fifth.put(team, rank);
+                    cnt4.put(team, 5);
                 }
-            } else {
-                int num = sArr[i][1];
-                int lt = num - 1;
-                int rt = num + 1;
+                rank++;
+            }
 
-                while (lt >= 1 && rt <= n && light[lt] == light[rt]) {
-                    lt--;
-                    rt++;
-                }
+            int winner = 0;
+            int minScore = Integer.MAX_VALUE;
 
-                for(int j = lt + 1; j <= rt - 1; j++) {
-                    light[j] = 1 - light[j];
+            for (int team : top4Sum.keySet()) {
+                int sum = top4Sum.get(team);
+
+                if (sum < minScore) {
+                    minScore = sum;
+                    winner = team;
+                } else if (sum == minScore) {
+                    if (fifth.get(team) < fifth.get(winner)) winner = team;
                 }
             }
-        }
 
-        for(int i = 1; i <= n; i++) {
-            bw.write(light[i] + " ");
-            if(i % 20 == 0) bw.write("\n");
+            bw.write(winner + "\n");
         }
 
         bw.flush();
