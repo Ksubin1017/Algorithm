@@ -2,52 +2,43 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
+    static int n, k;
+    static boolean[] visited = new boolean[100001];
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        int n = Integer.parseInt(br.readLine());
-        boolean[][] graph = new boolean[110][110];
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken());
+        k = Integer.parseInt(st.nextToken());
 
-        for(int i = 0; i < n; i++) {
-            String str = br.readLine();
-            for(int j = 0; j < n; j++) {
-                if(str.charAt(j) == '.') {
-                    graph[i][j] = true;
-                } else {
-                    graph[i][j] = false;
-                }
-            }
-        }
-
-        int rcnt = 0;
-        int lcnt = 0;
-        int row = 0;
-        int col = 0;
-
-        for(int i = 0; i < n; i++) {
-            rcnt = 0;
-            lcnt = 0;
-            for(int j = 0; j < n; j++) {
-                if(graph[i][j]) rcnt++;
-                else {
-                    if(rcnt >= 2) row++;
-                    rcnt = 0;
-                }
-
-                if(graph[j][i]) lcnt++;
-                else {
-                    if(lcnt >= 2) col++;
-                    lcnt = 0;
-                }
-            }
-            if(rcnt >= 2) row++;
-            if(lcnt >= 2) col++;
-        }
-
-
-        bw.write(row + " " + col);
+        bw.write(bfs() + "\n");
         bw.flush();
         bw.close();
+    }
+
+    static int bfs() {
+        Queue<int[]> q = new ArrayDeque<>();
+        q.offer(new int[]{n, 0});
+        visited[n] = true;
+
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
+            int pos = cur[0];
+            int sec = cur[1];
+
+            if (pos == k) return sec;
+
+            int[] next = {pos - 1, pos + 1, pos * 2};
+            for (int nx : next) {
+                if (nx < 0 || nx > 100000) continue;
+                if (visited[nx]) continue;
+
+                visited[nx] = true;
+                q.offer(new int[]{nx, sec + 1});
+            }
+        }
+        return -1;
     }
 }
