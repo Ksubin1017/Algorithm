@@ -2,43 +2,64 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int n, k;
-    static boolean[] visited = new boolean[100001];
+    static int n, cnt1, cnt2;
+    static char[][] graph;
+    static boolean[][] visited;
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    static int[] dx = {-1, 0, 1, 0};
+    static int[] dy = {0, -1, 0, 1};
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        n = Integer.parseInt(st.nextToken());
-        k = Integer.parseInt(st.nextToken());
+    static void dfs(int y, int x) {
+        visited[y][x] = true;
 
-        bw.write(bfs() + "\n");
-        bw.flush();
-        bw.close();
+        for(int k = 0; k < 4; k++) {
+            int nx = x + dx[k];
+            int ny = y + dy[k];
+
+            if (ny < 0 || nx < 0 || ny >= n || nx >= n) continue;
+
+            if(!visited[ny][nx] && graph[ny][nx] == graph[y][x]) dfs(ny, nx);
+        }
+
     }
 
-    static int bfs() {
-        Queue<int[]> q = new ArrayDeque<>();
-        q.offer(new int[]{n, 0});
-        visited[n] = true;
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        while (!q.isEmpty()) {
-            int[] cur = q.poll();
-            int pos = cur[0];
-            int sec = cur[1];
+        n = Integer.parseInt(br.readLine());
+        graph = new char[n][n];
 
-            if (pos == k) return sec;
+        for (int i = 0; i < n; i++) {
+            graph[i] = br.readLine().toCharArray();
+        }
 
-            int[] next = {pos - 1, pos + 1, pos * 2};
-            for (int nx : next) {
-                if (nx < 0 || nx > 100000) continue;
-                if (visited[nx]) continue;
+        visited = new boolean[n][n];
 
-                visited[nx] = true;
-                q.offer(new int[]{nx, sec + 1});
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (!visited[i][j]) {
+                    dfs(i, j);
+                    cnt1++;
+                }
             }
         }
-        return -1;
+
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                if(graph[i][j] == 'G') graph[i][j] = 'R';
+            }
+        }
+
+        visited = new boolean[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (!visited[i][j]) {
+                    dfs(i, j);
+                    cnt2++;
+                }
+            }
+        }
+
+        System.out.println(cnt1 + " " + cnt2);
     }
 }
