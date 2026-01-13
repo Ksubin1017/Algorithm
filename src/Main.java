@@ -2,41 +2,36 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int x, y;
-    static boolean[][] graph;
-    static boolean[][] visited;
-    static int[] dx = {-1, 0, 1, 0};
-    static int[] dy = {0, -1, 0, 1};
+    static int f, s, g, u, d;
+    static boolean[] visited;
+    static String bfs() {
+        if((s < g && u <= 0) || (s > g && d <= 0)) return "use the stairs";
 
-    static int bfs() {
         Queue<int[]> q = new ArrayDeque<>();
-        q.offer(new int[]{0, 0, 1});
-        visited[0][0] = true;
+        q.offer(new int[]{s, 0});
+        visited[s] = true;
 
         while(!q.isEmpty()) {
             int[] cur = q.poll();
-            int by = cur[0];
-            int bx = cur[1];
-            int cnt = cur[2];
+            int curS = cur[0];
+            int cnt = cur[1];
 
-            if(by == y - 1 && bx == x - 1) return cnt;
+            if(curS == g) return String.valueOf(cnt);
 
-            for(int k = 0; k < 4; k++) {
-                int ny = by + dy[k];
-                int nx = bx + dx[k];
-
-                if(ny < 0 || ny >= y || nx < 0 || nx >= x) continue;
-                if(!graph[ny][nx]) continue;
-                if(visited[ny][nx]) continue;
-
-                visited[ny][nx] = true;
-
-                q.offer(new int[]{ny, nx, cnt + 1});
+            int up = curS + u;
+            if(up <= f && !visited[up]) {
+                visited[up] = true;
+                q.offer(new int[]{up, cnt + 1});
             }
 
+            int down = curS - d;
+            if(down >= 1 && !visited[down]) {
+                visited[down] = true;
+                q.offer(new int[]{down, cnt + 1});
+            }
         }
 
-        return -1;
+        return "use the stairs";
     }
 
     public static void main(String[] args) throws Exception {
@@ -45,20 +40,14 @@ public class Main {
 
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        y = Integer.parseInt(st.nextToken());
-        x = Integer.parseInt(st.nextToken());
+        f = Integer.parseInt(st.nextToken());
+        s = Integer.parseInt(st.nextToken());
+        g = Integer.parseInt(st.nextToken());
+        u = Integer.parseInt(st.nextToken());
+        d = Integer.parseInt(st.nextToken());
 
-        graph = new boolean[y][x];
-        visited = new boolean[y][x];
-
-        for(int i = 0; i < y; i++) {
-            String line = br.readLine();
-            for(int j = 0; j < x; j++) {
-                graph[i][j] = line.charAt(j) == '1';
-            }
-        }
-
-        bw.write(String.valueOf(bfs()));
+        visited = new boolean[f + 1];
+        bw.write(bfs());
 
         bw.flush();
         bw.close();
