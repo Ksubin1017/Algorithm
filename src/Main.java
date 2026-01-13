@@ -6,20 +6,14 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        String s = "";
+        int n = Integer.parseInt(br.readLine());
+        long sum = 0;
 
-        while((s = br.readLine()) != null) {
-            int n = Integer.parseInt(s);
-            int m = 1;
-            int length = 1;
-
-            while(m % n != 0) {
-                m = (m * 10 + 1) % n;
-                length++;
-            }
-            bw.write(length + "\n");
+        for(int i = 1; i <= n; i++) {
+            sum += (long) i * (n / i);
         }
 
+        bw.write(sum + "\n");
         bw.flush();
         bw.close();
     }
