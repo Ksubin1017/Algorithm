@@ -6,15 +6,30 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        int n = Integer.parseInt(br.readLine());
-        long sum = 0;
+        int[] arr = new int[9];
+        int sum = 0;
 
-        for(int i = 1; i <= n; i++) {
-            sum += (long) i * (n / i);
+        for(int i = 0; i < arr.length; i++){
+            arr[i] = Integer.parseInt(br.readLine());
+            sum += arr[i];
         }
 
-        bw.write(sum + "\n");
+        for(int i = 0; i < 8; i++) {
+            for(int j = i + 1; j < 9; j++) {
+                if(sum - arr[i] - arr[j] == 100) {
+                    arr[i] = 0;
+                    arr[j] = 0;
+                    Arrays.sort(arr);
+                    for(int k = 2; k < arr.length; k++) {
+                        System.out.println(arr[k]);
+                    }
+                    return;
+                }
+            }
+        }
+
         bw.flush();
         bw.close();
+
     }
 }
