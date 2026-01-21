@@ -3,59 +3,54 @@ import java.util.*;
 
 public class Main {
     static boolean[][] graph;
-    static boolean[][] visited;
-    static int n, m, cnt, area, maxWidth;
-    static int[] dx = {-1, 0, 1, 0};
-    static int[] dy = {0, -1, 0, 1};
+    static boolean[] visited;
+    static int n, m;
 
-    static void dfs(int y, int x) {
-        visited[y][x] = true;
-        area++;
+    static int bfs(int idx) {
+        Queue<int[]> q = new ArrayDeque<>();
+        q.offer(new int[] {idx, 0});
+        visited[idx] = true;
 
-        for(int k = 0; k < 4; k++) {
-            int nx = x + dx[k];
-            int ny = y + dy[k];
+        int count = 0;
 
-            if(ny < 0 || ny >= n || nx < 0 || nx >= m) continue;
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
+            int node = cur[0];
+            int depth = cur[1];
 
-            if(!visited[ny][nx] && graph[ny][nx]) {
-                dfs(ny, nx);
+            if(depth >= 2) continue;
+
+            for(int i = 1; i <= n; i++) {
+                if(!visited[i] && graph[node][i]) {
+                    visited[i] = true;
+                    count++;
+                    q.offer(new int[]{i, depth + 1});
+                }
             }
         }
+
+        return count;
     }
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(br.readLine());
+        m = Integer.parseInt(br.readLine());
 
-        graph = new boolean[510][510];
-        visited = new boolean[510][510];
+        graph = new boolean[n + 1][n + 1];
+        visited = new boolean[n + 1];
 
-        for(int i = 0; i < n; i++) {
-            st = new StringTokenizer(br.readLine());
-            for(int j = 0; j < m; j++) {
-                if(Integer.parseInt(st.nextToken()) == 1) {
-                    graph[i][j] = true;
-                }
-            }
+        for(int i = 1; i <= m; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            graph[a][b] = true;
+            graph[b][a] = true;
         }
 
-        for(int i = 0; i < n; i++) {
-            for(int j = 0; j < m; j++) {
-                if(!visited[i][j] && graph[i][j]) {
-                    area = 0;
-                    dfs(i, j);
-                    cnt++;
-                    maxWidth = Math.max(maxWidth, area);
-                }
-            }
-        }
-
-        bw.write(cnt + "\n" + maxWidth);
+        bw.write(bfs(1) + "\n");
         bw.flush();
         bw.close();
     }
