@@ -2,56 +2,68 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static boolean[][] graph;
-    static boolean[] visited;
+    static List<Integer>[] graph;
+    static int[] dist;
     static int n, m;
 
-    static int bfs(int idx) {
-        Queue<int[]> q = new ArrayDeque<>();
-        q.offer(new int[] {idx, 0});
-        visited[idx] = true;
+    static void bfs(int start) {
+        Queue<Integer> q = new ArrayDeque<>();
+        Arrays.fill(dist, -1);
 
-        int count = 0;
+        q.offer(start);
+        dist[start] = 0;
 
         while (!q.isEmpty()) {
-            int[] cur = q.poll();
-            int node = cur[0];
-            int depth = cur[1];
+            int cur = q.poll();
 
-            if(depth >= 2) continue;
-
-            for(int i = 1; i <= n; i++) {
-                if(!visited[i] && graph[node][i]) {
-                    visited[i] = true;
-                    count++;
-                    q.offer(new int[]{i, depth + 1});
+            for (int next : graph[cur]) {
+                if (dist[next] == -1) {
+                    dist[next] = dist[cur] + 1;
+                    q.offer(next);
                 }
             }
         }
-
-        return count;
     }
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        n = Integer.parseInt(br.readLine());
-        m = Integer.parseInt(br.readLine());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
 
-        graph = new boolean[n + 1][n + 1];
-        visited = new boolean[n + 1];
+        graph = new ArrayList[n + 1];
+        dist = new int[n + 1];
 
-        for(int i = 1; i <= m; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-            graph[a][b] = true;
-            graph[b][a] = true;
+        for (int i = 1; i <= n; i++) {
+            graph[i] = new ArrayList<>();
         }
 
-        bw.write(bfs(1) + "\n");
-        bw.flush();
-        bw.close();
+        for (int i = 0; i < m; i++) {
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            graph[a].add(b);
+            graph[b].add(a);
+        }
+
+        bfs(1);
+
+        int maxDistance = 0;
+        int num = Integer.MAX_VALUE;
+        int cnt = 0;
+
+        for (int i = 1; i <= n; i++) {
+            if (dist[i] > maxDistance) {
+                maxDistance = dist[i];
+                num = i;
+                cnt = 1;
+            } else if (dist[i] == maxDistance) {
+                cnt++;
+                num = Math.min(num, i);
+            }
+        }
+
+        System.out.println(num + " " + maxDistance + " " + cnt);
     }
 }
