@@ -2,70 +2,83 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static List<Integer>[] graph;
-    static int n, k, m;
 
-    static int bfs() {
-        boolean[] visited = new boolean[n + m + 1];
-        int[] dist = new int[n + m + 1];
+    static int N, M;
+    static List<Integer>[] partyOfPerson;
+    static List<Integer>[] peopleInParty;
+    static boolean[] knowTruth;
+    static boolean[] visitedParty;
 
-        Queue<Integer> q = new ArrayDeque<>();
-        q.offer(1);
-        visited[1] = true;
-        dist[1] = 1;
+    static void dfs(int person) {
+        for (int party : partyOfPerson[person]) {
+            if (visitedParty[party]) continue;
 
-        while (!q.isEmpty()) {
-            int cur = q.poll();
+            visitedParty[party] = true;
 
-            if (cur == n) {
-                return dist[cur];
-            }
-
-            for (int next : graph[cur]) {
-                if (visited[next]) continue;
-
-                visited[next] = true;
-
-                if (next > n) {
-                    dist[next] = dist[cur];
-                } else {
-                    dist[next] = dist[cur] + 1;
+            for (int nextPerson : peopleInParty[party]) {
+                if (!knowTruth[nextPerson]) {
+                    knowTruth[nextPerson] = true;
+                    dfs(nextPerson);
                 }
-
-                q.offer(next);
             }
         }
-
-        return -1;
     }
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        n = Integer.parseInt(st.nextToken());
-        k = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
 
-        graph = new ArrayList[n + m + 1];
-        for (int i = 1; i <= n + m; i++) {
-            graph[i] = new ArrayList<>();
+        knowTruth = new boolean[N + 1];
+        partyOfPerson = new ArrayList[N + 1];
+        peopleInParty = new ArrayList[M + 1];
+        visitedParty = new boolean[M + 1];
+
+        for (int i = 1; i <= N; i++) {
+            partyOfPerson[i] = new ArrayList<>();
+        }
+        for (int i = 1; i <= M; i++) {
+            peopleInParty[i] = new ArrayList<>();
         }
 
-        for (int i = 1; i <= m; i++) {
-            int tubeNode = n + i;
+        st = new StringTokenizer(br.readLine());
+        int cnt = Integer.parseInt(st.nextToken());
+        for (int i = 0; i < cnt; i++) {
+            int person = Integer.parseInt(st.nextToken());
+            knowTruth[person] = true;
+        }
 
+        for (int i = 1; i <= M; i++) {
             st = new StringTokenizer(br.readLine());
-            for (int j = 0; j < k; j++) {
-                int station = Integer.parseInt(st.nextToken());
-                graph[station].add(tubeNode);
-                graph[tubeNode].add(station);
+            int num = Integer.parseInt(st.nextToken());
+
+            for (int j = 0; j < num; j++) {
+                int person = Integer.parseInt(st.nextToken());
+                peopleInParty[i].add(person);
+                partyOfPerson[person].add(i);
             }
         }
 
-        bw.write(bfs() + "\n");
-        bw.flush();
-        bw.close();
+        for (int i = 1; i <= N; i++) {
+            if (knowTruth[i]) {
+                dfs(i);
+            }
+        }
+
+        int answer = 0;
+        for (int i = 1; i <= M; i++) {
+            boolean canLie = true;
+            for (int person : peopleInParty[i]) {
+                if (knowTruth[person]) {
+                    canLie = false;
+                    break;
+                }
+            }
+            if (canLie) answer++;
+        }
+
+        System.out.println(answer);
     }
 }
