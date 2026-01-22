@@ -3,67 +3,69 @@ import java.util.*;
 
 public class Main {
     static List<Integer>[] graph;
-    static int[] dist;
-    static int n, m;
+    static int n, k, m;
 
-    static void bfs(int start) {
+    static int bfs() {
+        boolean[] visited = new boolean[n + m + 1];
+        int[] dist = new int[n + m + 1];
+
         Queue<Integer> q = new ArrayDeque<>();
-        Arrays.fill(dist, -1);
-
-        q.offer(start);
-        dist[start] = 0;
+        q.offer(1);
+        visited[1] = true;
+        dist[1] = 1;
 
         while (!q.isEmpty()) {
             int cur = q.poll();
 
+            if (cur == n) {
+                return dist[cur];
+            }
+
             for (int next : graph[cur]) {
-                if (dist[next] == -1) {
+                if (visited[next]) continue;
+
+                visited[next] = true;
+
+                if (next > n) {
+                    dist[next] = dist[cur];
+                } else {
                     dist[next] = dist[cur] + 1;
-                    q.offer(next);
                 }
+
+                q.offer(next);
             }
         }
+
+        return -1;
     }
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
         n = Integer.parseInt(st.nextToken());
+        k = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
 
-        graph = new ArrayList[n + 1];
-        dist = new int[n + 1];
-
-        for (int i = 1; i <= n; i++) {
+        graph = new ArrayList[n + m + 1];
+        for (int i = 1; i <= n + m; i++) {
             graph[i] = new ArrayList<>();
         }
 
-        for (int i = 0; i < m; i++) {
+        for (int i = 1; i <= m; i++) {
+            int tubeNode = n + i;
+
             st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-            graph[a].add(b);
-            graph[b].add(a);
-        }
-
-        bfs(1);
-
-        int maxDistance = 0;
-        int num = Integer.MAX_VALUE;
-        int cnt = 0;
-
-        for (int i = 1; i <= n; i++) {
-            if (dist[i] > maxDistance) {
-                maxDistance = dist[i];
-                num = i;
-                cnt = 1;
-            } else if (dist[i] == maxDistance) {
-                cnt++;
-                num = Math.min(num, i);
+            for (int j = 0; j < k; j++) {
+                int station = Integer.parseInt(st.nextToken());
+                graph[station].add(tubeNode);
+                graph[tubeNode].add(station);
             }
         }
 
-        System.out.println(num + " " + maxDistance + " " + cnt);
+        bw.write(bfs() + "\n");
+        bw.flush();
+        bw.close();
     }
 }
