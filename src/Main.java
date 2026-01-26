@@ -7,34 +7,34 @@ public class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int m = Integer.parseInt(st.nextToken());
 
+        int n = Integer.parseInt(st.nextToken());
+        int s = Integer.parseInt(st.nextToken());
         int[] arr = new int[n];
+        st = new StringTokenizer(br.readLine());
 
         for(int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(br.readLine());
+            arr[i] = Integer.parseInt(st.nextToken());
         }
-
-        Arrays.sort(arr);
 
         int lt = 0;
         int rt = 0;
-        int min = Integer.MAX_VALUE;
+        int sum = 0;
+        int len = Integer.MAX_VALUE;
 
-        while(lt <= rt && rt < arr.length) {
-            int minus = arr[rt] - arr[lt];
-            if(minus < m) rt++;
-            else if(minus > m) {
-                min = Math.min(min, minus);
-                lt++;
+        while(true) {
+            if(sum >= s) {
+                len = Math.min(len, rt - lt);
+                sum -= arr[lt++];
             } else {
-                min = minus;
-                break;
+                if(rt == n) break;
+                sum += arr[rt++];
             }
+
         }
 
-        bw.write(min + "\n");
+        if(len == Integer.MAX_VALUE) len = 0;
+        bw.write(len + "\n");
         bw.flush();
         bw.close();
     }
