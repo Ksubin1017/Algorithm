@@ -2,39 +2,50 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
+    public static boolean[] getPrimeFlags(int n) {
+        boolean[] isPrime = new boolean[n + 1];
+        Arrays.fill(isPrime, true);
+
+        if (n >= 0) isPrime[0] = false;
+        if (n >= 1) isPrime[1] = false;
+
+        for (int i = 2; i * i <= n; i++) {
+            if (isPrime[i]) {
+                for (int j = i * i; j <= n; j += i) {
+                    isPrime[j] = false;
+                }
+            }
+        }
+
+        return isPrime;
+    }
+
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(br.readLine());
+        boolean[] isPrime = getPrimeFlags(n);
 
-        int n = Integer.parseInt(st.nextToken());
-        int s = Integer.parseInt(st.nextToken());
-        int[] arr = new int[n];
-        st = new StringTokenizer(br.readLine());
-
-        for(int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
+        List<Integer> primes = new ArrayList<>();
+        for (int i = 2; i <= n; i++) {
+            if(isPrime[i]) primes.add(i);
         }
 
         int lt = 0;
         int rt = 0;
         int sum = 0;
-        int len = Integer.MAX_VALUE;
+        int cnt = 0;
 
-        while(true) {
-            if(sum >= s) {
-                len = Math.min(len, rt - lt);
-                sum -= arr[lt++];
-            } else {
-                if(rt == n) break;
-                sum += arr[rt++];
-            }
+        while(lt < n && rt < n) {
+            if(sum >= n) sum -= primes.get(lt++);
+            else if(rt == primes.size()) break;
+            else sum += primes.get(rt++);
 
+            if(sum == n) cnt++;
         }
 
-        if(len == Integer.MAX_VALUE) len = 0;
-        bw.write(len + "\n");
+        bw.write(cnt + "\n");
         bw.flush();
         bw.close();
     }
