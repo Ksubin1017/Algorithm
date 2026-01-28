@@ -2,50 +2,44 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    public static boolean[] getPrimeFlags(int n) {
-        boolean[] isPrime = new boolean[n + 1];
-        Arrays.fill(isPrime, true);
-
-        if (n >= 0) isPrime[0] = false;
-        if (n >= 1) isPrime[1] = false;
-
-        for (int i = 2; i * i <= n; i++) {
-            if (isPrime[i]) {
-                for (int j = i * i; j <= n; j += i) {
-                    isPrime[j] = false;
-                }
-            }
-        }
-
-        return isPrime;
-    }
-
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        int n = Integer.parseInt(br.readLine());
-        boolean[] isPrime = getPrimeFlags(n);
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int k = Integer.parseInt(st.nextToken());
+        int[] arr = new int[n];
 
-        List<Integer> primes = new ArrayList<>();
-        for (int i = 2; i <= n; i++) {
-            if(isPrime[i]) primes.add(i);
+        st = new StringTokenizer(br.readLine());
+        for(int i = 0; i < n; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
         }
 
         int lt = 0;
         int rt = 0;
-        int sum = 0;
         int cnt = 0;
+        int maxLen = 0;
 
-        while(lt < n && rt < n) {
-            if(sum >= n) sum -= primes.get(lt++);
-            else if(rt == primes.size()) break;
-            else sum += primes.get(rt++);
-
-            if(sum == n) cnt++;
+        while(rt < n) {
+            if(cnt < k) {
+                if(arr[rt] % 2 != 0) {
+                    cnt++;
+                }
+                rt++;
+                maxLen = Math.max(maxLen, rt - lt - cnt);
+            } else if(arr[rt] % 2 == 0) {
+                rt++;
+                maxLen = Math.max(maxLen, rt - lt - cnt);
+            } else {
+                if(arr[lt] % 2 != 0) {
+                    cnt--;
+                }
+                lt++;
+            }
         }
 
-        bw.write(cnt + "\n");
+        bw.write(maxLen + "");
         bw.flush();
         bw.close();
     }
