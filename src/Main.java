@@ -6,34 +6,38 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        int n = Integer.parseInt(br.readLine());
-        int[] arr = new int[n];
         StringTokenizer st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
-        }
-        Arrays.sort(arr);
-        int x = Integer.parseInt(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
 
-        int lt = 0;
-        int rt = n - 1;
-        int answer = 0;
-
-        while(lt < rt) {
-            int sum = arr[lt] + arr[rt];
-
-            if(sum == x) {
-                answer++;
-                lt++;
-                rt--;
-            } else if(sum > x) {
-                rt--;
-            } else {
-                lt++;
-            }
+        st= new StringTokenizer(br.readLine());
+        int[] arr1 = new int[n];
+        for(int i = 0; i < n; i++) {
+            arr1[i] = Integer.parseInt(st.nextToken());
         }
 
-        bw.write(answer + "\n");
+        st= new StringTokenizer(br.readLine());
+        int[] arr2 = new int[m];
+        for(int i = 0; i < m; i++) {
+            arr2[i] = Integer.parseInt(st.nextToken());
+        }
+
+        int i = 0;
+        int j = 0;
+
+        List<Integer> answer = new ArrayList<>();
+
+        while(i < n && j < m) {
+            if(arr1[i] <= arr2[j]) answer.add(arr1[i++]);
+            else answer.add(arr2[j++]);
+        }
+
+        while(i < n) answer.add(arr1[i++]);
+        while(j < m) answer.add(arr2[j++]);
+
+        for(int x : answer) {
+            bw.write(x + " ");
+        }
         bw.flush();
         bw.close();
     }
