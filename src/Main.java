@@ -6,28 +6,31 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int k = Integer.parseInt(st.nextToken());
+        int n = Integer.parseInt(br.readLine());
         int[] arr = new int[n];
-        st = new StringTokenizer(br.readLine());
-
-        for(int i = 0; i < n; i++) {
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < n; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
         }
+        Arrays.sort(arr);
+        int x = Integer.parseInt(br.readLine());
 
-        int sum = 0;
+        int lt = 0;
+        int rt = n - 1;
+        int answer = 0;
 
+        while(lt < rt) {
+            int sum = arr[lt] + arr[rt];
 
-        for(int i = 0; i < k; i++) {
-            sum += arr[i];
-        }
-
-        int answer = sum;
-
-        for(int i = k; i < n; i++) {
-            sum = sum + arr[i] - arr[i - k];
-            answer = Math.max(answer, sum);
+            if(sum == x) {
+                answer++;
+                lt++;
+                rt--;
+            } else if(sum > x) {
+                rt--;
+            } else {
+                lt++;
+            }
         }
 
         bw.write(answer + "\n");
