@@ -10,36 +10,27 @@ public class Main {
         int n = Integer.parseInt(st.nextToken());
         int k = Integer.parseInt(st.nextToken());
         int[] arr = new int[n];
-
         st = new StringTokenizer(br.readLine());
+
         for(int i = 0; i < n; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        int lt = 0;
-        int rt = 0;
-        int cnt = 0;
-        int maxLen = 0;
+        int sum = 0;
 
-        while(rt < n) {
-            if(cnt < k) {
-                if(arr[rt] % 2 != 0) {
-                    cnt++;
-                }
-                rt++;
-                maxLen = Math.max(maxLen, rt - lt - cnt);
-            } else if(arr[rt] % 2 == 0) {
-                rt++;
-                maxLen = Math.max(maxLen, rt - lt - cnt);
-            } else {
-                if(arr[lt] % 2 != 0) {
-                    cnt--;
-                }
-                lt++;
-            }
+
+        for(int i = 0; i < k; i++) {
+            sum += arr[i];
         }
 
-        bw.write(maxLen + "");
+        int answer = sum;
+
+        for(int i = k; i < n; i++) {
+            sum = sum + arr[i] - arr[i - k];
+            answer = Math.max(answer, sum);
+        }
+
+        bw.write(answer + "\n");
         bw.flush();
         bw.close();
     }
