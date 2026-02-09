@@ -8,26 +8,32 @@ public class Main {
 
         int n = Integer.parseInt(br.readLine());
 
-        int[] arr = new int[n];
+        String youngest = "";
+        String oldest = "";
+        int max = Integer.MIN_VALUE;
+        int min = Integer.MAX_VALUE;
 
-        for(int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(br.readLine());
-        }
+        for (int i = 0; i < n; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
 
-        Arrays.sort(arr);
+            String name = st.nextToken();
+            int d = Integer.parseInt(st.nextToken());
+            int m = Integer.parseInt(st.nextToken());
+            int y = Integer.parseInt(st.nextToken());
 
-        int answer = 5;
-        int l = 0;
+            int birth = y * 10000 + m * 100 + d;
 
-        for(int r = 0; r < n; r++) {
-            while(arr[r] - arr[l] > 4) {
-                l++;
+            if (birth > max) {
+                max = birth;
+                youngest = name;
             }
-            int len = r - l + 1;
-            answer = Math.min(answer, 5 - len);
+            if (birth < min) {
+                min = birth;
+                oldest = name;
+            }
         }
 
-        bw.write(answer + "\n");
+        bw.write(youngest + "\n" + oldest);
         bw.flush();
         bw.close();
     }
