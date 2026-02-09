@@ -6,34 +6,27 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        int n = Integer.parseInt(br.readLine());
+        String s = br.readLine();
 
-        String youngest = "";
-        String oldest = "";
-        int max = Integer.MIN_VALUE;
-        int min = Integer.MAX_VALUE;
+        int n = s.length();
+        String answer = null;
 
-        for (int i = 0; i < n; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int i = 1; i < n - 1; i++) {
+            for (int j = i + 1; j < n; j++) {
 
-            String name = st.nextToken();
-            int d = Integer.parseInt(st.nextToken());
-            int m = Integer.parseInt(st.nextToken());
-            int y = Integer.parseInt(st.nextToken());
+                String a = new StringBuilder(s.substring(0, i)).reverse().toString();
+                String b = new StringBuilder(s.substring(i, j)).reverse().toString();
+                String c = new StringBuilder(s.substring(j)).reverse().toString();
 
-            int birth = y * 10000 + m * 100 + d;
+                String result = a + b + c;
 
-            if (birth > max) {
-                max = birth;
-                youngest = name;
-            }
-            if (birth < min) {
-                min = birth;
-                oldest = name;
+                if (answer == null || result.compareTo(answer) < 0) {
+                    answer = result;
+                }
             }
         }
 
-        bw.write(youngest + "\n" + oldest);
+        bw.write(answer);
         bw.flush();
         bw.close();
     }
