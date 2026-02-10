@@ -7,26 +7,22 @@ public class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         String s = br.readLine();
+        int count = 0;
 
-        int n = s.length();
-        String answer = null;
-
-        for (int i = 1; i < n - 1; i++) {
-            for (int j = i + 1; j < n; j++) {
-
-                String a = new StringBuilder(s.substring(0, i)).reverse().toString();
-                String b = new StringBuilder(s.substring(i, j)).reverse().toString();
-                String c = new StringBuilder(s.substring(j)).reverse().toString();
-
-                String result = a + b + c;
-
-                if (answer == null || result.compareTo(answer) < 0) {
-                    answer = result;
-                }
+        while(s.length() > 1) {
+            int sum = 0;
+            for(int i = 0; i < s.length(); i++) {
+                sum += s.charAt(i) - '0';
             }
+
+            s = String.valueOf(sum);
+            count++;
         }
 
-        bw.write(answer);
+        int num = s.charAt(0) - '0';
+
+        bw.write(count + "\n" + (num % 3 == 0 ? "YES" : "NO"));
+
         bw.flush();
         bw.close();
     }
