@@ -6,22 +6,21 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        String s = br.readLine();
-        int count = 0;
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        while(s.length() > 1) {
-            int sum = 0;
-            for(int i = 0; i < s.length(); i++) {
-                sum += s.charAt(i) - '0';
+        int e = Integer.parseInt(st.nextToken());
+        int s = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+
+        int year = 1;
+
+        while(true) {
+            if((year - e) % 15 == 0 && (year - s) % 28 == 0 && (year - m) % 19 == 0) {
+                bw.write(year + "\n");
+                break;
             }
-
-            s = String.valueOf(sum);
-            count++;
+            year++;
         }
-
-        int num = s.charAt(0) - '0';
-
-        bw.write(count + "\n" + (num % 3 == 0 ? "YES" : "NO"));
 
         bw.flush();
         bw.close();
