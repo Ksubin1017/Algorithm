@@ -5,28 +5,20 @@ public class Main {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringBuilder sb = new StringBuilder();
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int x = Integer.parseInt(st.nextToken());
-        int y = Integer.parseInt(st.nextToken());
+        String s = br.readLine();
 
-        int[] day = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-        String[] dow = {"MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"};
-
-        int sum = 0;
-
-        for(int i = 1; i < x; i++) {
-            sum += day[i];
+        for(int i = 0; i < s.length(); i++) {
+           if(i % 10 == 0 && i != 0) {
+               sb.append("\n");
+               sb.append(s.charAt(i));
+           } else {
+               sb.append(s.charAt(i));
+           }
         }
 
-        sum += y;
-        int idx = sum % 7;
-
-        if(idx != 0) {
-            bw.write(dow[idx - 1]);
-        } else {
-            bw.write(dow[6]);
-        }
+        bw.write(sb.toString());
         bw.flush();
         bw.close();
     }
