@@ -2,23 +2,33 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
+    static int d(int n) {
+        int sum = n;
+
+        while(n > 0) {
+            sum += n % 10;
+            n /= 10;
+        }
+
+        return sum;
+    }
+
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        StringBuilder sb = new StringBuilder();
 
-        String s = br.readLine();
+        boolean[] check = new boolean[10001];
 
-        for(int i = 0; i < s.length(); i++) {
-           if(i % 10 == 0 && i != 0) {
-               sb.append("\n");
-               sb.append(s.charAt(i));
-           } else {
-               sb.append(s.charAt(i));
-           }
+        for(int i = 1; i <= 10000; i++) {
+            int dn = d(i);
+            if(dn <= 10000) check[dn] = true;
         }
 
-        bw.write(sb.toString());
+        for(int i = 1; i <= 10000; i++) {
+            if(!check[i]) {
+                bw.write(i + "\n");
+            }
+        }
         bw.flush();
         bw.close();
     }
