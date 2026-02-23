@@ -1,20 +1,22 @@
 import java.io.*;
 import java.util.*;
+import java.math.BigInteger;
 
 public class Main {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int n = Integer.parseInt(br.readLine());
-        int answer = 0;
+        BigInteger p = new BigInteger(st.nextToken());
+        int k = Integer.parseInt(st.nextToken());
 
-        for(int i = 1; i <= n; i++) {
-            String s = String.valueOf(i);
-            for(char c : s.toCharArray()) {
-                if(c == '3' || c == '6' || c == '9') answer++;
+        for (int i = 2; i < k; i++) {
+            if (p.mod(BigInteger.valueOf(i)).equals(BigInteger.ZERO)) {
+                System.out.println("BAD " + i);
+                return;
             }
         }
 
-        System.out.println(answer);
+        System.out.println("GOOD");
     }
 }
