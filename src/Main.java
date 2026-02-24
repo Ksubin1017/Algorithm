@@ -6,28 +6,15 @@ public class Main {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int[] arr = new int[5];
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(br.readLine());
+        int answer = 0;
 
-        for(int i = 0; i < 5; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
+        for(int a = 1; a <= 500; a++) {
+            for(int b = 1; b <= a; b++) {
+                if(a * a == b * b + n) answer++;
+            }
         }
 
-        int i = 1;
-
-        while(true) {
-            int cnt = 0;
-
-            if(i % arr[0] == 0) cnt++;
-            if(i % arr[1] == 0) cnt++;
-            if(i % arr[2] == 0) cnt++;
-            if(i % arr[3] == 0) cnt++;
-            if(i % arr[4] == 0) cnt++;
-
-            if(cnt >= 3) break;
-            else i++;
-        }
-
-        System.out.println(i);
+        System.out.println(answer);
     }
 }
