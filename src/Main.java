@@ -6,15 +6,18 @@ public class Main {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int n = Integer.parseInt(br.readLine());
-        int answer = 0;
+        int t = Integer.parseInt(br.readLine());
 
-        for(int a = 1; a <= 500; a++) {
-            for(int b = 1; b <= a; b++) {
-                if(a * a == b * b + n) answer++;
+        while(t-- > 0) {
+            int n = Integer.parseInt(br.readLine());
+            int max = 0;
+            for(int i = 1; i <= n; i++) {
+                int time = (i * i) + i;
+                if(time <= n) {
+                    max = Math.max(max, i);
+                }
             }
+            System.out.println(max);
         }
-
-        System.out.println(answer);
     }
 }
