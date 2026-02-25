@@ -1,24 +1,24 @@
 import java.io.*;
-import java.util.*;
 import java.math.BigInteger;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int n = Integer.parseInt(br.readLine());
-        int answer = 0;
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        BigInteger k = new BigInteger(st.nextToken());
+        int l = Integer.parseInt(st.nextToken());
 
-        for(int a = 1; a <= n; a++) {
-            for(int b = 1; b <= n; b++) {
-                for(int c = 1; c <= n; c++) {
-                    if(a - b >= 2 && c % 2 == 0 && a + b + c == n) {
-                        answer++;
-                    }
-                }
+        for(int i = 2; i < l; i++) {
+            BigInteger n = BigInteger.valueOf(i);
+
+            if(k.mod(n).equals(BigInteger.ZERO)) {
+                System.out.println("BAD " + i);
+                return;
             }
         }
 
-        System.out.println(answer);
+        System.out.println("GOOD");
     }
 }
