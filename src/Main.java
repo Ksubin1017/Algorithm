@@ -6,21 +6,36 @@ public class Main {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int t = Integer.parseInt(br.readLine());
+        int n = Integer.parseInt(br.readLine());
 
+        int max = Integer.MIN_VALUE;
+        int winner = 0;
 
-        while (t-- > 0) {
+        for(int person = 1; person <= n; person++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            int n = Integer.parseInt(st.nextToken());
-            int m = Integer.parseInt(st.nextToken());
-            int cnt = 0;
-            for(int i = n; i <= m; i++) {
-                for(char c : String.valueOf(i).toCharArray()) {
-                    if(c == '0') cnt++;
+            int[] card = new int[5];
+
+            for(int i = 0; i < 5; i++) {
+                card[i] = Integer.parseInt(st.nextToken());
+            }
+
+            int top = 0;
+
+            for(int i = 0; i < 3; i++) {
+                for(int j = i + 1; j < 4; j++) {
+                    for(int k = j + 1; k < 5; k++) {
+                        int sum = card[i] + card[j] + card[k];
+                        top = Math.max(top, sum % 10);
+                    }
                 }
             }
 
-            System.out.println(cnt);
+            if(top >= max) {
+                winner = person;
+                max = top;
+            }
         }
+
+        System.out.println(winner);
     }
 }
