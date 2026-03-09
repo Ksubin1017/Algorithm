@@ -2,38 +2,50 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
+    static boolean isPalindrome(String s) {
+        int l = 0;
+        int r = s.length() - 1;
+
+        while (l < r) {
+            if(s.charAt(l) != s.charAt(r)) return false;
+            l++;
+            r--;
+        }
+
+        return true;
+    }
+
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        while (true) {
+        int t = Integer.parseInt(br.readLine());
 
-            String line = br.readLine();
-            if(line == null) break;
+        while(t-- > 0) {
+            int n = Integer.parseInt(br.readLine());
+            String[] arr = new String[n];
 
-            StringTokenizer st = new StringTokenizer(line);
+            boolean flag = false;
 
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
+            for(int i = 0; i < n; i++) {
+                arr[i] = br.readLine();
+            }
 
-            int cnt = 0;
-
-            for (int i = a; i <= b; i++) {
-                char[] arr = String.valueOf(i).toCharArray();
-                boolean flag = true;
-
-                for(int x = 0; x < arr.length; x++) {
-                    for(int y = x + 1; y < arr.length; y++) {
-                        if(arr[x] == arr[y]) {
-                            flag = false;
-                            break;
-                        }
+            for(int i = 0; i < n; i++) {
+                for(int j = 0; j < n; j++) {
+                    if(i == j) continue;
+                    flag = isPalindrome(arr[i] + arr[j]);
+                    if(flag) {
+                        System.out.println(arr[i] + arr[j]);
+                        break;
                     }
                 }
 
-                if(flag) cnt++;
+                if(flag) break;
             }
 
-            System.out.println(cnt);
+            if(!flag) {
+                System.out.println(0);
+            }
         }
     }
 }
