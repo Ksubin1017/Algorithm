@@ -5,31 +5,26 @@ public class Main {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        boolean[][] map = new boolean[101][101];
+        int n = Integer.parseInt(br.readLine());
+        int dasom = Integer.parseInt(br.readLine());
 
-        for(int t = 1; t <= 4; t++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
 
-            int x1 = Integer.parseInt(st.nextToken());
-            int y1 = Integer.parseInt(st.nextToken());
-            int x2 = Integer.parseInt(st.nextToken());
-            int y2 = Integer.parseInt(st.nextToken());
-
-            for(int i = x1; i < x2; i++) {
-                for(int j = y1; j < y2; j++) {
-                    map[i][j] = true;
-                }
-            }
+        for(int i = 1; i < n; i++) {
+            pq.add(Integer.parseInt(br.readLine()));
         }
 
-        int area = 0;
+        int cnt = 0;
 
-        for(int i = 0; i < 101; i++) {
-            for(int j = 0; j < 101; j++) {
-                if(map[i][j]) area++;
-            }
+        while(!pq.isEmpty() && pq.peek() >= dasom) {
+            int top = pq.poll();
+            top--;
+            dasom++;
+            cnt++;
+
+            pq.add(top);
         }
 
-        System.out.println(area);
+        System.out.println(cnt);
     }
 }
