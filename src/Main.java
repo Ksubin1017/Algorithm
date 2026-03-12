@@ -5,19 +5,31 @@ public class Main {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int n  = Integer.parseInt(br.readLine());
+        boolean[][] map = new boolean[101][101];
 
-        Queue<Integer> q = new ArrayDeque<>();
+        for(int t = 1; t <= 4; t++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
 
-        for(int i = 1; i <= n; i++) {
-            q.offer(i);
+            int x1 = Integer.parseInt(st.nextToken());
+            int y1 = Integer.parseInt(st.nextToken());
+            int x2 = Integer.parseInt(st.nextToken());
+            int y2 = Integer.parseInt(st.nextToken());
+
+            for(int i = x1; i < x2; i++) {
+                for(int j = y1; j < y2; j++) {
+                    map[i][j] = true;
+                }
+            }
         }
 
-        while(q.size() > 1) {
-            System.out.print(q.poll() + " ");
-            q.add(q.poll());
+        int area = 0;
+
+        for(int i = 0; i < 101; i++) {
+            for(int j = 0; j < 101; j++) {
+                if(map[i][j]) area++;
+            }
         }
 
-        System.out.print(q.poll());
+        System.out.println(area);
     }
 }
