@@ -5,26 +5,36 @@ public class Main {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int n = Integer.parseInt(br.readLine());
-        int dasom = Integer.parseInt(br.readLine());
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+        int a = Integer.parseInt(st.nextToken());
+        int k = Integer.parseInt(st.nextToken());
 
-        for(int i = 1; i < n; i++) {
-            pq.add(Integer.parseInt(br.readLine()));
+        Queue<int[]> q = new LinkedList<>();
+        boolean[] visited = new boolean[k + 1];
+
+        q.offer(new int[]{a, 0});
+        visited[a] = true;
+
+        while(!q.isEmpty()) {
+            int[] cur = q.poll();
+            int num = cur[0];
+            int cnt = cur[1];
+
+            if(num == k) {
+                System.out.println(cnt);
+                break;
+            }
+
+            if(num + 1 <= k && !visited[num + 1]) {
+                visited[num + 1] = true;
+                q.offer(new int[]{num + 1, cnt + 1});
+            }
+
+            if(num * 2 <= k && !visited[num * 2]) {
+                visited[num * 2] = true;
+                q.offer(new int[]{num * 2, cnt + 1});
+            }
         }
-
-        int cnt = 0;
-
-        while(!pq.isEmpty() && pq.peek() >= dasom) {
-            int top = pq.poll();
-            top--;
-            dasom++;
-            cnt++;
-
-            pq.add(top);
-        }
-
-        System.out.println(cnt);
     }
 }
