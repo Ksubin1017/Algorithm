@@ -2,39 +2,41 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
+    static int N, M;
+    static boolean[][] graph;
+    static boolean[] visited;
+    static int CNT = -1;
+
+    static void dfs(int x) {
+        visited[x] = true;
+        CNT++;
+
+        for(int i = 1; i <= N; i++) {
+            if(!visited[i] && graph[x][i]) {
+                dfs(i);
+            }
+        }
+    }
+
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(br.readLine());
+        M = Integer.parseInt(br.readLine());
 
-        int a = Integer.parseInt(st.nextToken());
-        int k = Integer.parseInt(st.nextToken());
+        graph = new boolean[N + 1][N + 1];
+        visited = new boolean[N + 1];
 
-        Queue<int[]> q = new LinkedList<>();
-        boolean[] visited = new boolean[k + 1];
-
-        q.offer(new int[]{a, 0});
-        visited[a] = true;
-
-        while(!q.isEmpty()) {
-            int[] cur = q.poll();
-            int num = cur[0];
-            int cnt = cur[1];
-
-            if(num == k) {
-                System.out.println(cnt);
-                break;
-            }
-
-            if(num + 1 <= k && !visited[num + 1]) {
-                visited[num + 1] = true;
-                q.offer(new int[]{num + 1, cnt + 1});
-            }
-
-            if(num * 2 <= k && !visited[num * 2]) {
-                visited[num * 2] = true;
-                q.offer(new int[]{num * 2, cnt + 1});
-            }
+        for(int i = 1; i <= M; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            graph[a][b] = true;
+            graph[b][a] = true;
         }
+
+        dfs(1);
+
+        System.out.println(CNT);
     }
 }
