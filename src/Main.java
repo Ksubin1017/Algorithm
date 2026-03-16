@@ -2,41 +2,37 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int N, M;
-    static boolean[][] graph;
-    static boolean[] visited;
-    static int CNT = -1;
-
-    static void dfs(int x) {
-        visited[x] = true;
-        CNT++;
-
-        for(int i = 1; i <= N; i++) {
-            if(!visited[i] && graph[x][i]) {
-                dfs(i);
-            }
-        }
-    }
-
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        N = Integer.parseInt(br.readLine());
-        M = Integer.parseInt(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int k = Integer.parseInt(st.nextToken());
 
-        graph = new boolean[N + 1][N + 1];
-        visited = new boolean[N + 1];
-
-        for(int i = 1; i <= M; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-            graph[a][b] = true;
-            graph[b][a] = true;
+        int[] arr = new int[n];
+        for(int i = 0; i < n; i++) {
+            arr[i] = Integer.parseInt(br.readLine());
         }
 
-        dfs(1);
+        boolean[] visited = new boolean[n];
 
-        System.out.println(CNT);
+        int cur = 0;
+        int cnt = 0;
+
+        while(true) {
+            if(cur == k) {
+                System.out.println(cnt);
+                return;
+            }
+
+            if(visited[cur]) {
+                System.out.println(-1);
+                return;
+            }
+
+            visited[cur] = true;
+            cur = arr[cur];
+            cnt++;
+        }
     }
 }
