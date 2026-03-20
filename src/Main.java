@@ -2,85 +2,59 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int N, M;
-    static char[][] graph;
-    static boolean[][] visited;
-    static int[] dx = {-1, 0, 1, 0};
-    static int[] dy = {0, -1, 0, 1};
+    static int N, M, K, X;
+    static List<Integer>[] graph;
+    static int[] DIST;
 
-    static int dfsB(int y, int x) {
-        visited[y][x] = true;
-        int cnt = 1;
+    static void bfs() {
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(X);
+        DIST[X] = 0;
 
-        for(int k = 0; k < 4; k++) {
-            int ny = y + dy[k];
-            int nx = x + dx[k];
+        while (!q.isEmpty()) {
+            int now = q.poll();
 
-            if(ny < 1 || ny > M || nx < 1 || nx > N) continue;
-
-            if(!visited[ny][nx] && graph[ny][nx] == 'B') {
-                cnt += dfsB(ny, nx);
+            for (int next : graph[now]) {
+                if (DIST[next] == -1) {
+                    DIST[next] = DIST[now] + 1;
+                    q.offer(next);
+                }
             }
         }
-
-        return cnt;
     }
 
-    static int dfsW(int y, int x) {
-        visited[y][x] = true;
-        int cnt = 1;
-
-        for(int k = 0; k < 4; k++) {
-            int ny = y + dy[k];
-            int nx = x + dx[k];
-
-            if(ny < 1 || ny > M || nx < 1 || nx > N) continue;
-
-            if(!visited[ny][nx] && graph[ny][nx] == 'W') {
-                cnt += dfsW(ny, nx);
-            }
-        }
-
-        return cnt;
-    }
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
+
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
+        K = Integer.parseInt(st.nextToken());
+        X = Integer.parseInt(st.nextToken());
 
-        graph = new char[M + 1][N + 1];
-        visited = new boolean[M + 1][N + 1];
+        graph = new ArrayList[N + 1];
+        for(int i = 1; i <= N; i++) graph[i] = new ArrayList<>();
 
-        for(int i = 1; i <= M; i++) {
-            String s = br.readLine();
-            for(int j = 1; j <= N; j++) {
-                graph[i][j] = s.charAt(j - 1);
+        for (int i = 0; i < M; i++) {
+            st = new StringTokenizer(br.readLine());
+            int A = Integer.parseInt(st.nextToken());
+            int B = Integer.parseInt(st.nextToken());
+            graph[A].add(B);
+        }
+
+        DIST = new int[N + 1];
+        Arrays.fill(DIST, -1);
+
+        bfs();
+
+        boolean found = false;
+        for (int i = 1; i <= N; i++) {
+            if (DIST[i] == K) {
+                System.out.println(i);
+                found = true;
             }
         }
 
-        int sumB = 0;
-        int sumW = 0;
-
-        for(int i = 1; i <= M; i++) {
-            for(int j = 1; j <= N; j++) {
-                if(!visited[i][j] && graph[i][j] == 'B') {
-                    int size = dfsB(i, j);
-                    sumB += size * size;
-                }
-            }
-        }
-
-        visited = new boolean[M + 1][N + 1];
-        for(int i = 1; i <= M; i++) {
-            for(int j = 1; j <= N; j++) {
-                if(!visited[i][j] && graph[i][j] == 'W') {
-                    int size = dfsW(i, j);
-                    sumW += size * size;
-                }
-            }
-        }
-
-        System.out.println(sumW + " " + sumB);
+        if (!found) System.out.println(-1);
     }
 }
