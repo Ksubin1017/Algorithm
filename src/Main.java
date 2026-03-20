@@ -2,25 +2,37 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int N, M, K, X;
-    static List<Integer>[] graph;
-    static int[] DIST;
+    static int N, M;
+    static int[] penny;
 
-    static void bfs() {
-        Queue<Integer> q = new LinkedList<>();
-        q.offer(X);
-        DIST[X] = 0;
+    static int bfs(int start) {
+        Queue<int[]> q = new LinkedList<>();
+        boolean[] visited = new boolean[2001];
+        int offset = 1000;
 
-        while (!q.isEmpty()) {
-            int now = q.poll();
+        q.offer(new int[]{start, 0});
+        visited[offset] = true;
 
-            for (int next : graph[now]) {
-                if (DIST[next] == -1) {
-                    DIST[next] = DIST[now] + 1;
-                    q.offer(next);
+        while(!q.isEmpty()) {
+            int[] cur = q.poll();
+            int money = cur[0];
+            int cnt = cur[1];
+
+            if(money == M) return cnt;
+
+            for(int i = 0; i < N; i++) {
+                int next = money + penny[i];
+
+                if (next < -1000 || next > 1000) continue;
+
+                if (!visited[next + offset]) {
+                    visited[next + offset] = true;
+                    q.offer(new int[]{next, cnt + 1});
                 }
             }
         }
+
+        return -1;
     }
 
     public static void main(String[] args) throws Exception {
@@ -29,32 +41,16 @@ public class Main {
 
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
-        K = Integer.parseInt(st.nextToken());
-        X = Integer.parseInt(st.nextToken());
 
-        graph = new ArrayList[N + 1];
-        for(int i = 1; i <= N; i++) graph[i] = new ArrayList<>();
+        penny = new int[N];
 
-        for (int i = 0; i < M; i++) {
+        if (N > 0) {
             st = new StringTokenizer(br.readLine());
-            int A = Integer.parseInt(st.nextToken());
-            int B = Integer.parseInt(st.nextToken());
-            graph[A].add(B);
-        }
-
-        DIST = new int[N + 1];
-        Arrays.fill(DIST, -1);
-
-        bfs();
-
-        boolean found = false;
-        for (int i = 1; i <= N; i++) {
-            if (DIST[i] == K) {
-                System.out.println(i);
-                found = true;
+            for(int i = 0; i < N; i++) {
+                penny[i] = Integer.parseInt(st.nextToken());
             }
         }
 
-        if (!found) System.out.println(-1);
+        System.out.println(bfs(0));
     }
 }
