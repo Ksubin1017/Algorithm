@@ -2,37 +2,42 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int N, S;
+    static int N, A, B;
     static int[] graph;
     static boolean[] visited;
 
     static int bfs() {
-        Queue<Integer> q = new LinkedList<>();
-        q.offer(S);
-        visited[S] = true;
-        int cnt = 1;
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(new int[]{A, 0});
+        visited[A] = true;
 
-        while(!q.isEmpty()) {
-            int cur = q.poll();
-            int jump = graph[cur];
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
+            int loc = cur[0];
+            int cnt = cur[1];
 
-            int next1 = cur + jump;
-            int next2 = cur - jump;
+            if (loc == B) return cnt;
 
-            if(next1 <= N && !visited[next1]) {
-                q.offer(next1);
-                visited[next1] = true;
-                cnt++;
+            int jump = graph[loc];
+
+            for(int k = 1; loc + jump * k <= N; k++) {
+                int next = loc + jump * k;
+                if(visited[next]) continue;
+
+                visited[next] = true;
+                q.offer(new int[]{next, cnt + 1});
             }
 
-            if(next2 >= 1 && !visited[next2]) {
-                q.offer(next2);
-                visited[next2] = true;
-                cnt++;
+            for(int k = 1; loc - jump * k >= 1; k++) {
+                int next = loc - jump * k;
+                if(visited[next]) continue;
+
+                visited[next] = true;
+                q.offer(new int[]{next, cnt + 1});
             }
         }
 
-        return cnt;
+        return -1;
     }
 
     public static void main(String[] args) throws Exception {
@@ -45,11 +50,13 @@ public class Main {
 
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        for(int i = 1; i <= N; i++) {
+        for (int i = 1; i <= N; i++) {
             graph[i] = Integer.parseInt(st.nextToken());
         }
 
-        S = Integer.parseInt(br.readLine());
+        st = new StringTokenizer(br.readLine());
+        A = Integer.parseInt(st.nextToken());
+        B = Integer.parseInt(st.nextToken());
 
         System.out.println(bfs());
     }
