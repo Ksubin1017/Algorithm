@@ -2,43 +2,56 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int[] arr;
-    static boolean[] visited;
-    static int bfs() {
-        Queue<int[]> q = new LinkedList<>();
-        q.offer(new int[]{0, 0});
+    static int H, W, MAX = 110;
+    static boolean[][] graph;
+    static boolean[][] visited;
+    static int[] dx = {-1, 0, 1, 0};
+    static int[] dy = {0, -1, 0, 1};
 
-        while(!q.isEmpty()) {
-            int[] cur = q.poll();
-            int idx = cur[0];
-            int cnt = cur[1];
+    static void dfs(int y, int x) {
+        visited[y][x] = true;
 
-            if(idx == arr.length - 1) return cnt;
-            for(int i = 1; i <= arr[idx]; i++) {
-                if(arr[idx] == 0 || idx + i >= arr.length) continue;
-                if(!visited[idx + i]) {
-                    visited[idx + i] = true;
-                    q.offer(new int[]{idx + i, cnt + 1});
-                }
+        for (int k = 0; k < 4; k++) {
+            int ny = y + dy[k];
+            int nx = x + dx[k];
+
+            if(!visited[ny][nx] && graph[ny][nx]) {
+                dfs(ny, nx);
             }
         }
-
-        return -1;
     }
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int n = Integer.parseInt(br.readLine());
-        arr = new int[n];
-        visited = new boolean[n];
+        int t = Integer.parseInt(br.readLine());
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        while(t-- > 0) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            H = Integer.parseInt(st.nextToken());
+            W = Integer.parseInt(st.nextToken());
 
-        for(int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
+            graph = new boolean[MAX][MAX];
+            visited = new boolean[MAX][MAX];
+
+            for(int i = 1; i <= H; i++) {
+                String s = br.readLine();
+                for(int j = 1; j <= W; j++) {
+                    if(s.charAt(j - 1) == '#') graph[i][j] = true;
+                }
+            }
+
+            int cnt = 0;
+
+            for(int i = 1; i <= H; i++) {
+                for(int j = 1; j <= W; j++) {
+                    if(graph[i][j] && !visited[i][j]) {
+                        dfs(i, j);
+                        cnt++;
+                    }
+                }
+            }
+            System.out.println(cnt);
         }
-
-        System.out.println(bfs());
     }
 }
