@@ -2,56 +2,55 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int H, W, MAX = 110;
-    static boolean[][] graph;
-    static boolean[][] visited;
-    static int[] dx = {-1, 0, 1, 0};
-    static int[] dy = {0, -1, 0, 1};
+    static int N, S;
+    static int[] graph;
+    static boolean[] visited;
 
-    static void dfs(int y, int x) {
-        visited[y][x] = true;
+    static int bfs() {
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(S);
+        visited[S] = true;
+        int cnt = 1;
 
-        for (int k = 0; k < 4; k++) {
-            int ny = y + dy[k];
-            int nx = x + dx[k];
+        while(!q.isEmpty()) {
+            int cur = q.poll();
+            int jump = graph[cur];
 
-            if(!visited[ny][nx] && graph[ny][nx]) {
-                dfs(ny, nx);
+            int next1 = cur + jump;
+            int next2 = cur - jump;
+
+            if(next1 <= N && !visited[next1]) {
+                q.offer(next1);
+                visited[next1] = true;
+                cnt++;
+            }
+
+            if(next2 >= 1 && !visited[next2]) {
+                q.offer(next2);
+                visited[next2] = true;
+                cnt++;
             }
         }
+
+        return cnt;
     }
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int t = Integer.parseInt(br.readLine());
+        N = Integer.parseInt(br.readLine());
 
-        while(t-- > 0) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            H = Integer.parseInt(st.nextToken());
-            W = Integer.parseInt(st.nextToken());
+        graph = new int[N + 1];
+        visited = new boolean[N + 1];
 
-            graph = new boolean[MAX][MAX];
-            visited = new boolean[MAX][MAX];
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-            for(int i = 1; i <= H; i++) {
-                String s = br.readLine();
-                for(int j = 1; j <= W; j++) {
-                    if(s.charAt(j - 1) == '#') graph[i][j] = true;
-                }
-            }
-
-            int cnt = 0;
-
-            for(int i = 1; i <= H; i++) {
-                for(int j = 1; j <= W; j++) {
-                    if(graph[i][j] && !visited[i][j]) {
-                        dfs(i, j);
-                        cnt++;
-                    }
-                }
-            }
-            System.out.println(cnt);
+        for(int i = 1; i <= N; i++) {
+            graph[i] = Integer.parseInt(st.nextToken());
         }
+
+        S = Integer.parseInt(br.readLine());
+
+        System.out.println(bfs());
     }
 }
