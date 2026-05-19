@@ -7,38 +7,32 @@ public class Main {
 }
 
 class Solution {
-    public int solution(int[] priorities, int location) {
-        Deque<int[]> q = new ArrayDeque<>();
+    public int solution(int bridge_length, int weight, int[] truck_weights) {
+        int answer = 0;
+        Queue<Integer> b = new LinkedList<>();
 
-        for(int i = 0; i < priorities.length; i++) {
-            q.offer(new int[]{priorities[i], i});
+        for(int i = 0; i < bridge_length; i++) {
+            b.offer(0);
         }
 
-        int order = 0;
-        while(!q.isEmpty()) {
-            int[] cur = q.poll();
 
-            boolean higher = false;
+        int time = 0;
+        int cur = 0;
+        int index = 0;
 
-            for(int[] chk: q) {
-                if(cur[0] < chk[0]) {
-                    higher = true;
-                    break;
-                }
-            }
+        while(index < truck_weights.length) {
+            time++;
+            cur -= b.poll();
 
-            if(higher) {
-                q.offer(cur);
+            if(cur + truck_weights[index] <= weight) {
+                b.offer(truck_weights[index]);
+                cur += truck_weights[index];
+                index++;
             } else {
-                order++;
-
-                if(cur[1] == location) {
-                    return order;
-                }
+                b.offer(0);
             }
-        }
 
-        return order;
+        }
+        return time + bridge_length;
     }
 }
-
