@@ -1,38 +1,32 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
-    public static void main(String[] args) throws Exception {
+class Main {
+    static class Node {
+        int value;
+        int index;
+
+        Node(int value, int index) {
+            this.value = value;
+            this.index = index;
+        }
     }
-}
 
-class Solution {
-    public int solution(int bridge_length, int weight, int[] truck_weights) {
-        int answer = 0;
-        Queue<Integer> b = new LinkedList<>();
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        String[] arr = br.readLine().split(" ");
 
-        for(int i = 0; i < bridge_length; i++) {
-            b.offer(0);
+        List<Node> list = new ArrayList<>();
+
+        for(int i = 0; i < n; i++) {
+            list.add(new Node(Integer.parseInt(arr[i]), i + 1));
         }
 
+        list.sort((a, b) -> b.value - a.value);
 
-        int time = 0;
-        int cur = 0;
-        int index = 0;
-
-        while(index < truck_weights.length) {
-            time++;
-            cur -= b.poll();
-
-            if(cur + truck_weights[index] <= weight) {
-                b.offer(truck_weights[index]);
-                cur += truck_weights[index];
-                index++;
-            } else {
-                b.offer(0);
-            }
-
+        for(int i = 0; i < 3; i++) {
+            System.out.print(list.get(i).index + " ");
         }
-        return time + bridge_length;
     }
 }
