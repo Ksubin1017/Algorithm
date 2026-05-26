@@ -1,32 +1,18 @@
 import java.io.*;
-import java.util.*;
-
 class Main {
-    static class Node {
-        int value;
-        int index;
-
-        Node(int value, int index) {
-            this.value = value;
-            this.index = index;
-        }
-    }
-
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
-        String[] arr = br.readLine().split(" ");
 
-        List<Node> list = new ArrayList<>();
+        int[] coins = {40, 20, 10, 5, 1};
 
-        for(int i = 0; i < n; i++) {
-            list.add(new Node(Integer.parseInt(arr[i]), i + 1));
+        int count = 0;
+
+        for(int coin : coins) {
+            count += n / coin;
+            n %= coin;
         }
 
-        list.sort((a, b) -> b.value - a.value);
-
-        for(int i = 0; i < 3; i++) {
-            System.out.print(list.get(i).index + " ");
-        }
+        System.out.println(count);
     }
 }
