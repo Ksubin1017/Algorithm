@@ -1,27 +1,32 @@
 import java.io.*;
+import java.util.*;
 
 class Main {
-    static final long MOD = 1000000007L;
-
     public static void main(String[] args) throws Exception {
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int k = Integer.parseInt(br.readLine());
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        if(k == 1) {
-            System.out.println(0);
-            return;
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+
+        Set<Integer> set = new HashSet<>();
+
+        int answer = -1;
+
+        for(int i = 1; i <= m; i++) {
+
+            int card = Integer.parseInt(br.readLine());
+
+            set.add(card);
+
+            if(set.size() == n) {
+                answer = i;
+                break;
+            }
         }
 
-        long a = 0;
-        long b = 1;
-
-        for(int i = 3; i <= k; i++) {
-            long temp = (a + b) % MOD;
-            a = b;
-            b = temp;
-        }
-
-        System.out.println(b);
+        System.out.println(answer);
     }
 }
