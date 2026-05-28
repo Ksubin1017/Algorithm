@@ -6,27 +6,35 @@ class Main {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(br.readLine());
 
-        int n = Integer.parseInt(st.nextToken());
-        int m = Integer.parseInt(st.nextToken());
+        int[][] arr = new int[n][n];
 
-        Set<Integer> set = new HashSet<>();
+        int x = 0;
+        int y = 0;
 
-        int answer = -1;
-
-        for(int i = 1; i <= m; i++) {
-
-            int card = Integer.parseInt(br.readLine());
-
-            set.add(card);
-
-            if(set.size() == n) {
-                answer = i;
-                break;
+        for(int i = 0; i < n; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            for(int j = 0; j < n; j++) {
+                int a = Integer.parseInt(st.nextToken());
+                if(a == 0) {
+                    x = j;
+                    y = i;
+                }
+                arr[i][j] = a;
             }
         }
 
-        System.out.println(answer);
+        int sum = 0;
+
+        for(int i = 0; i < n; i++) {
+            sum += arr[y][i];
+        }
+
+        for(int i = 0; i < n; i++) {
+            sum += arr[i][x];
+        }
+
+        System.out.println(sum);
     }
 }
