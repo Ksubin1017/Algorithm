@@ -6,35 +6,30 @@ class Main {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int n = Integer.parseInt(br.readLine());
+        Queue<Integer> q = new ArrayDeque<>();
 
-        int[][] arr = new int[n][n];
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
         int x = 0;
-        int y = 0;
 
         for(int i = 0; i < n; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            for(int j = 0; j < n; j++) {
-                int a = Integer.parseInt(st.nextToken());
-                if(a == 0) {
-                    x = j;
-                    y = i;
-                }
-                arr[i][j] = a;
+            st = new StringTokenizer(br.readLine());
+            String s = st.nextToken();
+            if(st.hasMoreTokens()) {
+                x = Integer.parseInt(st.nextToken());
+            }
+
+            if(s.equals("push")) {
+                if(q.size() < m) q.offer(x);
+                else System.out.println("Overflow");
+            } else {
+                if(q.isEmpty()) System.out.println("Underflow");
+                else System.out.println(q.poll());
             }
         }
 
-        int sum = 0;
 
-        for(int i = 0; i < n; i++) {
-            sum += arr[y][i];
-        }
-
-        for(int i = 0; i < n; i++) {
-            sum += arr[i][x];
-        }
-
-        System.out.println(sum);
     }
 }
