@@ -3,33 +3,43 @@ import java.util.*;
 
 class Main {
     public static void main(String[] args) throws Exception {
-
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        Queue<Integer> q = new ArrayDeque<>();
+        int n = Integer.parseInt(br.readLine());
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        for(int t = 0; t < n; t++) {
+            int[] a = new int[5];
+            int[] b = new int[5];
 
-        int n = Integer.parseInt(st.nextToken());
-        int m = Integer.parseInt(st.nextToken());
-        int x = 0;
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int cnt = Integer.parseInt(st.nextToken());
 
-        for(int i = 0; i < n; i++) {
+            for(int i = 0; i < cnt; i++) {
+                a[Integer.parseInt(st.nextToken())]++;
+            }
+
             st = new StringTokenizer(br.readLine());
-            String s = st.nextToken();
-            if(st.hasMoreTokens()) {
-                x = Integer.parseInt(st.nextToken());
+            cnt = Integer.parseInt(st.nextToken());
+
+            for(int i = 0; i < cnt; i++) {
+                b[Integer.parseInt(st.nextToken())]++;
             }
 
-            if(s.equals("push")) {
-                if(q.size() < m) q.offer(x);
-                else System.out.println("Overflow");
-            } else {
-                if(q.isEmpty()) System.out.println("Underflow");
-                else System.out.println(q.poll());
+            String result = "D";
+
+            for(int i = 4; i >= 0; i--) {
+                if(a[i] > b[i]) {
+                    result = "A";
+                    break;
+                }
+
+                if(a[i] < b[i]) {
+                    result = "B";
+                    break;
+                }
             }
+
+            System.out.println(result);
         }
-
-
     }
 }
