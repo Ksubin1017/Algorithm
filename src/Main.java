@@ -1,45 +1,30 @@
 import java.io.*;
 import java.util.*;
 
-class Main {
+public class Main {
+    static int[] dx = {-1, 0, 1, 0};
+    static int[] dy = {0, -1, 0, 1};
+    static int X, Y, N;
+
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int n = Integer.parseInt(br.readLine());
+        int t = Integer.parseInt(br.readLine());
 
-        for(int t = 0; t < n; t++) {
-            int[] a = new int[5];
-            int[] b = new int[5];
-
+        while (t-- > 0) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            int cnt = Integer.parseInt(st.nextToken());
 
-            for(int i = 0; i < cnt; i++) {
-                a[Integer.parseInt(st.nextToken())]++;
+            int X = Integer.parseInt(st.nextToken());
+            int Y = Integer.parseInt(st.nextToken());
+            int N = Integer.parseInt(st.nextToken());
+
+            int dist = Math.abs(X) + Math.abs(Y);
+
+            if (dist <= N && (N - dist) % 2 == 0) {
+                System.out.println("YES");
+            } else {
+                System.out.println("NO");
             }
-
-            st = new StringTokenizer(br.readLine());
-            cnt = Integer.parseInt(st.nextToken());
-
-            for(int i = 0; i < cnt; i++) {
-                b[Integer.parseInt(st.nextToken())]++;
-            }
-
-            String result = "D";
-
-            for(int i = 4; i >= 0; i--) {
-                if(a[i] > b[i]) {
-                    result = "A";
-                    break;
-                }
-
-                if(a[i] < b[i]) {
-                    result = "B";
-                    break;
-                }
-            }
-
-            System.out.println(result);
         }
     }
 }
